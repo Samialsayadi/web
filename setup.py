@@ -1,27 +1,29 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="gitingest",
-    version="0.1.2",
+    name="your_package_name",
+    version="0.1.0",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     include_package_data=True,
     install_requires=[
-        "click>=8.0.0",
-        "tiktoken",
+        # List your package dependencies here
+        # For example:
+        # "requests>=2.25.1",
     ],
     entry_points={
         "console_scripts": [
-            "gitingest=gitingest.cli:main",
+            # Add your command line scripts here
+            # "your-command=your_package.module:function",
         ],
     },
     python_requires=">=3.6",
-    author="Romain Courtois",
-    author_email="romain@coderamp.io",
-    description="CLI tool to analyze and create text dumps of codebases for LLMs",
+    author="Your Name",
+    author_email="your.email@example.com", 
+    description="A short description of your package",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/cyclotruc/gitingest",
+    url="https://github.com/username/repository",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
