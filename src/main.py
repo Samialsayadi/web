@@ -1,11 +1,7 @@
 """ Main module for the FastAPI application. """
 
-import asyncio
 import os
-import shutil
-import time
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from api_analytics.fastapi import Analytics
 from dotenv import load_dotenv
@@ -17,7 +13,6 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from config import DELETE_REPO_AFTER, TMP_BASE_PATH
 from routers import dynamic, index
 from server_utils import limiter
 
@@ -44,11 +39,9 @@ async def lifespan(_: FastAPI):
     yield
 
 
-
 # Initialize the FastAPI application with lifespan
 app = FastAPI(lifespan=lifespan)
 app.state.limiter = limiter
-
 
 async def rate_limit_exception_handler(request: Request, exc: Exception) -> Response:
     """
@@ -76,7 +69,6 @@ async def rate_limit_exception_handler(request: Request, exc: Exception) -> Resp
         return _rate_limit_exceeded_handler(request, exc)
     # Re-raise other exceptions
     raise exc
-
 
 # Register the custom exception handler for rate limits
 app.add_exception_handler(RateLimitExceeded, rate_limit_exception_handler)
