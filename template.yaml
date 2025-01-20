@@ -12,6 +12,9 @@
 # - Rename the src/placeholder/ folder to src/package_name/
 # - Rename the placeholderimports in the files to the package_name
 
+# Manual chores needed:
+# - Update the static files (favicons, og-image.png, etc.)
+
 # ================================ Repository ================================ #
 
 author: "Your Name"
