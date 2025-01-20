@@ -7,7 +7,10 @@
 #   - CONTRIBUTING.md
 #   - src/config.py
 #   - src/main.py
+#   - src/static/robots.txt
 # - Create the src/package_name/ folder
+# - Rename the src/placeholder/ folder to src/package_name/
+# - Rename the placeholderimports in the files to the package_name
 
 # ================================ Repository ================================ #
 

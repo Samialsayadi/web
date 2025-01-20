@@ -10,9 +10,9 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from config import MAX_FILE_SIZE, TMP_BASE_PATH
-from gitingest.exceptions import InvalidPatternError
-from gitingest.ignore_patterns import DEFAULT_IGNORE_PATTERNS
-from gitingest.repository_clone import _check_repo_exists, fetch_remote_branch_list
+from placeholder.exceptions import InvalidPatternError
+from placeholder.ignore_patterns import DEFAULT_IGNORE_PATTERNS
+from placeholder.repository_clone import _check_repo_exists, fetch_remote_branch_list
 
 HEX_DIGITS: set[str] = set(string.hexdigits)
 

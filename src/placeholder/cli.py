@@ -7,7 +7,7 @@ import asyncio
 import click
 
 from config import MAX_FILE_SIZE
-from gitingest.repository_ingest import ingest
+from placeholder.repository_ingest import ingest
 
 
 @click.command()

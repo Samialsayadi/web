@@ -5,14 +5,14 @@ from pathlib import Path
 from typing import Any
 
 from config import MAX_DIRECTORY_DEPTH, MAX_FILES, MAX_TOTAL_SIZE_BYTES
-from gitingest.exceptions import (
+from placeholder.exceptions import (
     AlreadyVisitedError,
     InvalidNotebookError,
     MaxFileSizeReachedError,
     MaxFilesReachedError,
 )
-from gitingest.notebook_utils import process_notebook
-from gitingest.query_parser import ParsedQuery
+from placeholder.notebook_utils import process_notebook
+from placeholder.query_parser import ParsedQuery
 
 
 def _should_include(path: Path, base_path: Path, include_patterns: set[str]) -> bool:
