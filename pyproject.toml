@@ -1,7 +1,7 @@
 [project]
 name = "{{ package_name }}"
-version = "{{ version }}"
-description="{{ description }}"
+version = "{{ package_version }}"
+description="{{ package_description }}"
 readme = {file = "README.md", content-type = "text/markdown" }
 requires-python = ">= 3.10"
 dependencies = [

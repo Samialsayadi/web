@@ -23,8 +23,8 @@ github_repository: "your_github_repository"
 # ====================== Pypi package (pyproject.toml) ======================= #
 
 package_name: "your_package_name"
-version: "0.1.0"
-description: "A brief description of your package"
+package_version: "0.1.0"
+package_description: "A brief description of your package"
 
 # ================================= Project ================================== #
 
@@ -36,7 +36,7 @@ firefox_extension_url: "https://addons.mozilla.org/firefox/addon/example"
 edge_extension_url: "https://microsoftedge.microsoft.com/addons/detail/example"
 discord_invite: "https://discord.com/invite/example"
 project_description: |
-  A brief description of your project, will appear at the top of the README.md
+  A description of your project, will appear at the top of the README.md
 
 # Badges (README.md)
 project_badges: |
