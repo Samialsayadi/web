@@ -10,7 +10,7 @@ from config import EXAMPLE_REPOS, MAX_DISPLAY_SIZE
 from placeholder.query_ingestion import run_ingest_query
 from placeholder.query_parser import ParsedQuery, parse_query
 from placeholder.repository_clone import CloneConfig, clone_repo
-from server_utils import Colors, log_slider_to_size
+from server_utils import Colors
 
 templates = Jinja2Templates(directory="templates")
 
@@ -65,7 +65,7 @@ async def process_query(
 
     template = "index.jinja" if is_index else "git.jinja"
     template_response = partial(templates.TemplateResponse, name=template)
-    max_file_size = log_slider_to_size(slider_position)
+    max_file_size = 10
 
     context = {
         "request": request,
