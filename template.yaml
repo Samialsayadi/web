@@ -1,33 +1,89 @@
-# Package information
-package_name: "your_package_name"
-version: "0.1.0"
-description: "A brief description of your package"
+# ================================ Repository ================================ #
+
 author: "Your Name"
 author_email: "your.email@example.com"
 security_email: "your.email@example.com"
-repository_url: "https://github.com/username/repository"
+github_username: "your_github_username"
+github_repository: "your_github_repository"
 
-# Website information
-project_name: "your_project_name"
+# ================================= Project ================================== #
+
+project_name: "Projectname"
 project_url: "https://your-project-url.com"
+chrome_extension_url: "https://chromewebstore.google.com/detail/example"
+firefox_extension_url: "https://addons.mozilla.org/firefox/addon/example"
+discord_invite: "https://discord.com/invite/example"
+project_description: |
+  A brief description of your project, will appear at the top of the README.md
 
-# Python requirements
+# Badges (README.md)
+project_badges: |
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+  [![PyPI version](https://badge.fury.io/py/example.svg)](https://badge.fury.io/py/example)
+  [![GitHub stars](https://img.shields.io/github/stars/example?style=social)](https://github.com/example)
+  [![Downloads](https://pepy.tech/badge/example)](https://pepy.tech/project/example)
+
+# Features (README.md)
+project_features: |
+  - **Feature 1**: ...
+  - **Feature 2**: ...
+  - **Feature 3**: ...:
+    - ...
+    - ... 
+    - ...
+  - **Feature 4**: ...
+  - **Feature 5**: ...
+
+# Stack (README.md)
+project_stack: |
+  Stack used for the project
+
+# Installation (README.md)
+project_installation_steps: |
+  The steps to install the project
+
+# Command line usage (README.md)
+project_command_line_usage: |
+  Describes the steps to use the command line tool
+
+# Python package usage (README.md)
+project_python_package_usage: |
+  Describes the steps to use the Python package
+
+# Self-host (README.md)
+project_self_host_steps: |
+  Describes the steps to self-host the project
+
+# Browser Extension Usage (README.md)
+chrome_extension_badge: "..."
+firefox_extension_badge: "..."
+edge_extension_badge: "..."
+project_extension_informations: |
+  This flavor text will appear in the README.md file
+  under the extension badges
+
+# ============================== Pypi package ================================ #
+
+package_name: "your_package_name"
+version: "0.1.0"
+description: "A brief description of your package"
+
+# Python requirements (setup.py)
 python_requires: ">=3.7"
 
-# Dependencies
+# [!] The quotes and commas are needed in the three following values
+# Dependencies (setup.py)
 install_requires: |
-  # List your package dependencies here
-  # For example:
-  # "requests>=2.25.1",
-  # "pandas>=1.3.0",
-  # "numpy>=1.20.0"
+  "requests>=2.25.1",
+  "pandas>=1.3.0",
+  "numpy>=1.20.0"
 
-# Console scripts (CLI commands)
+# Console scripts (CLI commands) (setup.py)
 console_scripts: |
   "your-command=your_package.module:function",
   "another-command=your_package.other_module:other_function"
 
-# Additional Python package classifiers
+# Additional Python package classifiers (setup.py)
 # Full list: https://pypi.org/classifiers/
 additional_classifiers: |
   "Programming Language :: Python :: 3.7",

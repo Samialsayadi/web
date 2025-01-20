@@ -1,126 +1,61 @@
-# Gitingest
+# {{ project_name }}
 
-[![Image](./docs/frontpage.png "Gitingest main page")](https://gitingest.com)
+[![Image](./docs/frontpage.png "{{ project_name }} main page")]({{ project_url }})
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cyclotruc/gitingest/blob/main/LICENSE)
-[![PyPI version](https://badge.fury.io/py/gitingest.svg)](https://badge.fury.io/py/gitingest)
-[![GitHub stars](https://img.shields.io/github/stars/cyclotruc/gitingest?style=social.svg)](https://github.com/cyclotruc/gitingest)
-[![Downloads](https://pepy.tech/badge/gitingest)](https://pepy.tech/project/gitingest)
+{{ project_badges }}
 
-[![Discord](https://dcbadge.limes.pink/api/server/https://discord.com/invite/zerRaGK9EC)](https://discord.com/invite/zerRaGK9EC)
+[![Discord](https://dcbadge.limes.pink/api/server/{{ discord_invite }})]({{ discord_invite }})
 
-Turn any Git repository into a prompt-friendly text ingest for LLMs.
+{{ project_description }}
 
-You can also replace `hub` with `ingest` in any GitHub URL to access the coresponding digest.
-
-[gitingest.com](https://gitingest.com) · [Chrome Extension](https://chromewebstore.google.com/detail/adfjahbijlkjfoicpjkhjicpjpjfaood) · [Firefox Add-on](https://addons.mozilla.org/firefox/addon/gitingest)
+{{ project_url }} · [Chrome Extension]({{ chrome_extension_url }}) · [Firefox Add-on]({{ firefox_extension_url }})
 
 ## 🚀 Features
 
-- **Easy code context**: Get a text digest from a Git repository URL or a directory
-- **Smart Formatting**: Optimized output format for LLM prompts
-- **Statistics about**:
-  - File and directory structure
-  - Size of the extract
-  - Token count
-- **CLI tool**: Run it as a shell command (currently on Linux only)
-- **Python package**: Import it in your code
+{{ project_features }}
 
 ## 📦 Installation
 
-``` bash
-pip install gitingest
-```
+{{ project_installation_steps }}
 
 ## 🧩 Browser Extension Usage
 
 <!-- markdownlint-disable MD033 -->
-<a href="https://chromewebstore.google.com/detail/adfjahbijlkjfoicpjkhjicpjpjfaood" target="_blank" title="Get Gitingest Extension from Chrome Web Store"><img height="48" src="https://github.com/user-attachments/assets/20a6e44b-fd46-4e6c-8ea6-aad436035753" alt="Available in the Chrome Web Store" /></a>
-<a href="https://addons.mozilla.org/firefox/addon/gitingest" target="_blank" title="Get Gitingest Extension from Firefox Add-ons"><img height="48" src="https://github.com/user-attachments/assets/c0e99e6b-97cf-4af2-9737-099db7d3538b" alt="Get The Add-on for Firefox" /></a>
-<a href="https://microsoftedge.microsoft.com/addons/detail/nfobhllgcekbmpifkjlopfdfdmljmipf" target="_blank" title="Get Gitingest Extension from Firefox Add-ons"><img height="48" src="https://github.com/user-attachments/assets/204157eb-4cae-4c0e-b2cb-db514419fd9e" alt="Get from the Edge Add-ons" /></a>
+{{ chrome_extension_badge }}
+{{ firefox_extension_badge }}
+{{ edge_extension_badge }}
 <!-- markdownlint-enable MD033 -->
 
-The extension is open source at [lcandy2/gitingest-extension](https://github.com/lcandy2/gitingest-extension).
-
-Issues and feature requests are welcome to the repo.
+{{ project_extension_informations }}
 
 ## 💡 Command line usage
 
-The `gitingest` command line tool allows you to analyze codebases and create a text dump of their contents.
-
-```bash
-# Basic usage
-gitingest /path/to/directory
-
-# From URL
-gitingest https://github.com/cyclotruc/gitingest
-
-# See more options
-gitingest --help
-```
-
-This will write the digest in a text file (default `digest.txt`) in your current working directory.
+{{ project_command_line_usage }}
 
 ## 🐛 Python package usage
 
-```python
-from gitingest import ingest
-
-summary, tree, content = ingest("path/to/directory")
-
-# or from URL
-summary, tree, content = ingest("https://github.com/cyclotruc/gitingest")
-```
-
-By default, this won't write a file but can be enabled with the `output` argument.
+{{ project_python_package_usage }}
 
 ## 🌐 Self-host
 
-1. Build the image:
+{{ project_self_host_steps }}
 
-   ``` bash
-   docker build -t gitingest .
-   ```
-
-2. Run the container:
-
-   ``` bash
-   docker run -d --name gitingest -p 8000:8000 gitingest
-   ```
-
-The application will be available at `http://localhost:8000`.
-
-If you are hosting it on a domain, you can specify the allowed hostnames via env variable `ALLOWED_HOSTS`.
-
-   ```bash
-   # Default: "gitingest.com, *.gitingest.com, localhost, 127.0.0.1".
-   ALLOWED_HOSTS="example.com, localhost, 127.0.0.1"
-   ```
-
-## ✔️ Contributing to Gitingest
+## ✔️ Contributing to {{ project_name }}
 
 ### Non-technical ways to contribute
 
-- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/cyclotruc/gitingest/issues/new) on GitHub. This will help us track and prioritize your request.
-- **Spread the Word**: If you like Gitingest, please share it with your friends, colleagues, and on social media. This will help us grow the community and make Gitingest even better.
-- **Use Gitingest**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/cyclotruc/gitingest/issues/new) on GitHub or by reaching out to us on [Discord](https://discord.com/invite/zerRaGK9EC).
+- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub. This will help us track and prioritize your request.
+- **Spread the Word**: If you like {{ project_name }}, please share it with your friends, colleagues, and on social media. This will help us grow the community and make {{ project_name }} even better.
+- **Use {{ project_name }}**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub or by reaching out to us on [Discord]({{ discord_invite }}).
 
 ### Technical ways to contribute
 
-Gitingest aims to be friendly for first time contributors, with a simple python and html codebase. If you need any help while working with the code, reach out to us on [Discord](https://discord.com/invite/zerRaGK9EC). For detailed instructions on how to make a pull request, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+{{ project_name }} aims to be friendly for first time contributors, with a simple python and html codebase. If you need any help while working with the code, reach out to us on [Discord]({{ discord_invite }}). For detailed instructions on how to make a pull request, see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## 🛠️ Stack
 
-- [Tailwind CSS](https://tailwindcss.com) - Frontend
-- [FastAPI](https://github.com/fastapi/fastapi) - Backend framework
-- [Jinja2](https://jinja.palletsprojects.com) - HTML templating
-- [tiktoken](https://github.com/openai/tiktoken) - Token estimation
-- [apianalytics.dev](https://www.apianalytics.dev) - Simple Analytics
-
-### Looking for a JavaScript/Node package?
-
-Check out the NPM alternative 📦 Repomix: <https://github.com/yamadashy/repomix>
+{{ project_stack }}
 
 ## Project Growth
 
-[![Star History Chart](https://api.star-history.com/svg?repos=cyclotruc/gitingest&type=Date)](https://star-history.com/#cyclotruc/gitingest&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos={{ github_username }}/{{ github_repository }}&type=Date)](https://star-history.com/#{{ github_username }}/{{ github_repository }}&Date)
