@@ -13,7 +13,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from routers import download, dynamic, index
+from routers import dynamic, index
 from server_utils import limiter
 
 # Load environment variables from .env file
@@ -158,5 +158,4 @@ async def robots() -> FileResponse:
 
 # Include routers for modular endpoints
 app.include_router(index)
-app.include_router(download)
 app.include_router(dynamic)
