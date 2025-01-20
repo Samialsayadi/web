@@ -18,79 +18,11 @@ from slowapi.errors import RateLimitExceeded
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from config import DELETE_REPO_AFTER, TMP_BASE_PATH
-from routers import download, dynamic, index
+from routers import dynamic, index
 from server_utils import limiter
 
 # Load environment variables from .env file
 load_dotenv()
-
-
-async def remove_old_repositories():
-    """
-    Background task that runs periodically to clean up old repository directories.
-
-    This task:
-    - Scans the TMP_BASE_PATH directory every 60 seconds
-    - Removes directories older than DELETE_REPO_AFTER seconds
-    - Before deletion, logs repository URLs to history.txt if a matching .txt file exists
-    - Handles errors gracefully if deletion fails
-
-    The repository URL is extracted from the first .txt file in each directory,
-    assuming the filename format: "owner-repository.txt"
-    """
-    while True:
-        try:
-            if not TMP_BASE_PATH.exists():
-                await asyncio.sleep(60)
-                continue
-
-            current_time = time.time()
-
-            for folder in TMP_BASE_PATH.iterdir():
-                if not folder.is_dir():
-                    continue
-
-                # Skip if folder is not old enough
-                if current_time - folder.stat().st_ctime <= DELETE_REPO_AFTER:
-                    continue
-
-                await process_folder(folder)
-
-        except Exception as e:
-            print(f"Error in remove_old_repositories: {e}")
-
-        await asyncio.sleep(60)
-
-
-async def process_folder(folder: Path) -> None:
-    """
-    Process a single folder for deletion and logging.
-
-    Parameters
-    ----------
-    folder : Path
-        The path to the folder to be processed.
-    """
-    # Try to log repository URL before deletion
-    try:
-        txt_files = [f for f in folder.iterdir() if f.suffix == ".txt"]
-
-        # Extract owner and repository name from the filename
-        if txt_files and "-" in (filename := txt_files[0].stem):
-            owner, repo = filename.split("-", 1)
-            repo_url = f"{owner}/{repo}"
-            with open("history.txt", mode="a", encoding="utf-8") as history:
-                history.write(f"{repo_url}\n")
-
-    except Exception as e:
-        print(f"Error logging repository URL for {folder}: {e}")
-
-    # Delete the folder
-    try:
-        shutil.rmtree(folder)
-    except Exception as e:
-        print(f"Error deleting {folder}: {e}")
-
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -108,15 +40,9 @@ async def lifespan(_: FastAPI):
     None
         Yields control back to the FastAPI application while the background task runs.
     """
-    task = asyncio.create_task(remove_old_repositories())
 
     yield
-    # Cancel the background task on shutdown
-    task.cancel()
-    try:
-        await task
-    except asyncio.CancelledError:
-        pass
+
 
 
 # Initialize the FastAPI application with lifespan
@@ -168,7 +94,7 @@ if allowed_hosts:
     allowed_hosts = allowed_hosts.split(",")
 else:
     # Define the default allowed hosts for the application
-    default_allowed_hosts = ["gitingest.com", "*.gitingest.com", "localhost", "127.0.0.1"]
+    default_allowed_hosts = ["{{ project_url }}", "*.{{ project_url }}", "localhost", "127.0.0.1"]
     allowed_hosts = default_allowed_hosts
 
 # Add middleware to enforce allowed hosts
@@ -240,5 +166,4 @@ async def robots() -> FileResponse:
 
 # Include routers for modular endpoints
 app.include_router(index)
-app.include_router(download)
 app.include_router(dynamic)
