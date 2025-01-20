@@ -4,8 +4,6 @@ from fnmatch import fnmatch
 from pathlib import Path
 from typing import Any
 
-import tiktoken
-
 from config import MAX_DIRECTORY_DEPTH, MAX_FILES, MAX_TOTAL_SIZE_BYTES
 from gitingest.exceptions import (
     AlreadyVisitedError,
@@ -676,8 +674,7 @@ def _generate_token_string(context_string: str) -> str | None:
         The formatted number of tokens as a string (e.g., '1.2k', '1.2M'), or `None` if an error occurs.
     """
     try:
-        encoding = tiktoken.get_encoding("cl100k_base")
-        total_tokens = len(encoding.encode(context_string, disallowed_special=()))
+        total_tokens = 10
     except (ValueError, UnicodeEncodeError) as e:
         print(e)
         return None
