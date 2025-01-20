@@ -7,15 +7,10 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     install_requires=[
-        # List your package dependencies here
-        # For example:
-        # "requests>=2.25.1",
         {{ install_requires }}
     ],
     entry_points={
         "console_scripts": [
-            # Add your command line scripts here
-            # "your-command=your_package.module:function",
             {{ console_scripts }}
         ],
     },
@@ -25,7 +20,7 @@ setup(
     description="{{ description }}",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="{{ repository_url }}",
+    url="https://github.com/{{ github_username }}/{{ github_repository }}",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
