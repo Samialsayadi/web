@@ -1,4 +1,4 @@
-""" Gitingest: A package for ingesting data from Git repositories. """
+""" {{ project_name }}: {{ package_description }} """
 
 from placeholder.query_ingestion import run_ingest_query
 from placeholder.query_parser import parse_query
