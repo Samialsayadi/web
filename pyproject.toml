@@ -1,7 +1,7 @@
 [project]
-name = "gitingest"
-version = "0.1.2"
-description="CLI tool to analyze and create text dumps of codebases for LLMs"
+name = "{{ package_name }}"
+version = "{{ version }}"
+description="{{ description }}"
 readme = {file = "README.md", content-type = "text/markdown" }
 requires-python = ">= 3.10"
 dependencies = [
@@ -11,11 +11,10 @@ dependencies = [
     "python-dotenv",
     "slowapi",
     "starlette",
-    "tiktoken",
     "uvicorn",
 ]
 license = {file = "LICENSE"}
-authors = [{name = "Romain Courtois", email = "romain@coderamp.io"}]
+authors = [{name = "{{ author }}", email = "{{ author_email }}"}]
 classifiers=[
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -27,11 +26,11 @@ classifiers=[
 ]
 
 [project.scripts]
-gitingest = "gitingest.cli:main"
+{{ package_name }} = "{{ package_name }}.cli:main"
 
 [project.urls]
-homepage = "https://gitingest.com"
-github = "https://github.com/cyclotruc/gitingest"
+homepage = "{{ project_url }}"
+github = "https://github.com/{{ github_username }}/{{ github_repository }}"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
