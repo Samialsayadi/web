@@ -1,3 +1,7 @@
+# This file will be used to:
+# - Edit the files that have been templated
+# - Create the src/package_name/ folder
+
 # ================================ Repository ================================ #
 
 author: "Your Name"
@@ -6,12 +10,19 @@ security_email: "your.email@example.com"
 github_username: "your_github_username"
 github_repository: "your_github_repository"
 
+# ====================== Pypi package (pyproject.toml) ======================= #
+
+package_name: "your_package_name"
+version: "0.1.0"
+description: "A brief description of your package"
+
 # ================================= Project ================================== #
 
 project_name: "Projectname"
 project_url: "https://your-project-url.com"
 chrome_extension_url: "https://chromewebstore.google.com/detail/example"
 firefox_extension_url: "https://addons.mozilla.org/firefox/addon/example"
+edge_extension_url: "https://microsoftedge.microsoft.com/addons/detail/example"
 discord_invite: "https://discord.com/invite/example"
 project_description: |
   A brief description of your project, will appear at the top of the README.md
@@ -38,10 +49,6 @@ project_features: |
 project_stack: |
   Stack used for the project
 
-# Installation (README.md)
-project_installation_steps: |
-  The steps to install the project
-
 # Command line usage (README.md)
 project_command_line_usage: |
   Describes the steps to use the command line tool
@@ -55,40 +62,6 @@ project_self_host_steps: |
   Describes the steps to self-host the project
 
 # Browser Extension Usage (README.md)
-chrome_extension_badge: "..."
-firefox_extension_badge: "..."
-edge_extension_badge: "..."
 project_extension_informations: |
   This flavor text will appear in the README.md file
   under the extension badges
-
-# ============================== Pypi package ================================ #
-
-package_name: "your_package_name"
-version: "0.1.0"
-description: "A brief description of your package"
-
-# Python requirements (setup.py)
-python_requires: ">=3.7"
-
-# [!] The quotes and commas are needed in the three following values
-# Dependencies (setup.py)
-install_requires: |
-  "requests>=2.25.1",
-  "pandas>=1.3.0",
-  "numpy>=1.20.0"
-
-# Console scripts (CLI commands) (setup.py)
-console_scripts: |
-  "your-command=your_package.module:function",
-  "another-command=your_package.other_module:other_function"
-
-# Additional Python package classifiers (setup.py)
-# Full list: https://pypi.org/classifiers/
-additional_classifiers: |
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Operating System :: OS Independent",
-  "Topic :: Software Development :: Libraries :: Python Modules"
