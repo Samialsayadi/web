@@ -16,14 +16,16 @@
 
 ## 📦 Installation
 
-{{ project_installation_steps }}
+``` bash
+pip install {{ package_name }}
+```
 
 ## 🧩 Browser Extension Usage
 
 <!-- markdownlint-disable MD033 -->
-{{ chrome_extension_badge }}
-{{ firefox_extension_badge }}
-{{ edge_extension_badge }}
+<a href="{{ chrome_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Chrome Web Store"><img height="48" src="https://github.com/user-attachments/assets/20a6e44b-fd46-4e6c-8ea6-aad436035753" alt="Available in the Chrome Web Store" /></a>
+<a href="{{ firefox_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Firefox Add-ons"><img height="48" src="https://github.com/user-attachments/assets/c0e99e6b-97cf-4af2-9737-099db7d3538b" alt="Get The Add-on for Firefox" /></a>
+<a href="{{ edge_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Edge Add-ons"><img height="48" src="https://github.com/user-attachments/assets/204157eb-4cae-4c0e-b2cb-db514419fd9e" alt="Get from the Edge Add-ons" /></a>
 <!-- markdownlint-enable MD033 -->
 
 {{ project_extension_informations }}
@@ -38,7 +40,26 @@
 
 ## 🌐 Self-host
 
-{{ project_self_host_steps }}
+1. Build the image:
+
+   ``` bash
+   docker build -t {{ package_name }} .
+   ```
+
+2. Run the container:
+
+   ``` bash
+   docker run -d --name {{ package_name }} -p 8000:8000 {{ package_name }}
+   ```
+
+The application will be available at `http://localhost:8000`.
+
+If you are hosting it on a domain, you can specify the allowed hostnames via env variable `ALLOWED_HOSTS`.
+
+   ```bash
+   # Default: "gitingest.com, *.gitingest.com, localhost, 127.0.0.1".
+   ALLOWED_HOSTS="example.com, localhost, 127.0.0.1"
+   ```
 
 ## ✔️ Contributing to {{ project_name }}
 
@@ -54,7 +75,10 @@
 
 ## 🛠️ Stack
 
-{{ project_stack }}
+- [Tailwind CSS](https://tailwindcss.com) - Frontend
+- [FastAPI](https://github.com/fastapi/fastapi) - Backend framework
+- [Jinja2](https://jinja.palletsprojects.com) - HTML templating
+- [apianalytics.dev](https://www.apianalytics.dev) - Simple Analytics
 
 ## Project Growth
 
