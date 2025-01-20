@@ -1,0 +1,38 @@
+# Package information
+package_name: "your_package_name"
+version: "0.1.0"
+description: "A brief description of your package"
+author: "Your Name"
+author_email: "your.email@example.com"
+security_email: "your.email@example.com"
+repository_url: "https://github.com/username/repository"
+
+# Website information
+project_name: "your_project_name"
+project_url: "https://your-project-url.com"
+
+# Python requirements
+python_requires: ">=3.7"
+
+# Dependencies
+install_requires: |
+  # List your package dependencies here
+  # For example:
+  # "requests>=2.25.1",
+  # "pandas>=1.3.0",
+  # "numpy>=1.20.0"
+
+# Console scripts (CLI commands)
+console_scripts: |
+  "your-command=your_package.module:function",
+  "another-command=your_package.other_module:other_function"
+
+# Additional Python package classifiers
+# Full list: https://pypi.org/classifiers/
+additional_classifiers: |
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules"

@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="your_package_name",
-    version="0.1.0",
+    name="{{ package_name }}",
+    version="{{ version }}",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     include_package_data=True,
@@ -10,24 +10,27 @@ setup(
         # List your package dependencies here
         # For example:
         # "requests>=2.25.1",
+        {{ install_requires }}
     ],
     entry_points={
         "console_scripts": [
             # Add your command line scripts here
             # "your-command=your_package.module:function",
+            {{ console_scripts }}
         ],
     },
-    python_requires=">=3.6",
-    author="Your Name",
-    author_email="your.email@example.com", 
-    description="A short description of your package",
+    python_requires="{{ python_requires }}",
+    author="{{ author }}",
+    author_email="{{ author_email }}", 
+    description="{{ description }}",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/username/repository",
+    url="{{ repository_url }}",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
+        {{ additional_classifiers }}
     ],
 )
