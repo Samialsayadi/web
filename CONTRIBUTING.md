@@ -1,12 +1,12 @@
-# Contributing to Gitingest
+# Contributing to {{ project_name }}
 
-Thanks for your interest in contributing to Gitingest! 🚀 Gitingest aims to be friendly for first time contributors, with a simple python and html codebase. We would love your help to make it even better. If you need any help while working with the code, please reach out to us on [Discord](https://discord.com/invite/zerRaGK9EC).
+Thanks for your interest in contributing to {{ project_name }}! 🚀 {{ project_name }} aims to be friendly for first time contributors, with a simple python and html codebase. We would love your help to make it even better. If you need any help while working with the code, please reach out to us on [Discord]({{ discord_invite }}).
 
 ## How to Contribute (non-technical)
 
-- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/cyclotruc/gitingest/issues/new) on GitHub. This will help us track and prioritize your request.
-- **Spread the Word**: If you like Gitingest, please share it with your friends, colleagues, and on social media. This will help us grow the community and make Gitingest even better.
-- **Use Gitingest**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/cyclotruc/gitingest/issues/new) on GitHub or by reaching out to us on [Discord](https://discord.com/invite/zerRaGK9EC).
+- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub. This will help us track and prioritize your request.
+- **Spread the Word**: If you like {{ project_name }}, please share it with your friends, colleagues, and on social media. This will help us grow the community and make {{ project_name }} even better.
+- **Use {{ project_name }}**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub or by reaching out to us on [Discord]({{ discord_invite }}).
 
 ## How to submit a Pull Request
 
@@ -15,8 +15,8 @@ Thanks for your interest in contributing to Gitingest! 🚀 Gitingest aims to be
 2. Clone the forked repository:
 
    ```bash
-   git clone https://github.com/cyclotruc/gitingest.git
-   cd gitingest
+   git clone https://github.com/{{ github_username }}/{{ github_repository }}.git
+   cd {{ github_repository }}
    ```
 
 3. Set up the development environment and install dependencies:
@@ -53,13 +53,13 @@ Thanks for your interest in contributing to Gitingest! 🚀 Gitingest aims to be
    1. Build the Docker image
 
         ``` bash
-        docker build -t gitingest .
+        docker build -t {{ package_name }} .
         ```
 
    2. Run the Docker container:
 
       ``` bash
-      docker run -d --name gitingest -p 8000:8000 gitingest
+      docker run -d --name {{ package_name }} -p 8000:8000 {{ package_name }}
       ```
 
    3. Open your browser and navigate to `http://localhost:8000` to see the app running.
