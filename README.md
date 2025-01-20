@@ -57,7 +57,7 @@ The application will be available at `http://localhost:8000`.
 If you are hosting it on a domain, you can specify the allowed hostnames via env variable `ALLOWED_HOSTS`.
 
    ```bash
-   # Default: "gitingest.com, *.gitingest.com, localhost, 127.0.0.1".
+   # Default: "{{ project_domain }}, *.{{ project_domain }}, localhost, 127.0.0.1".
    ALLOWED_HOSTS="example.com, localhost, 127.0.0.1"
    ```
 

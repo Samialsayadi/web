@@ -1,5 +1,12 @@
 # This file will be used to:
 # - Edit the files that have been templated
+#   - README.md
+#   - pyproject.toml
+#   - SECURITY.md
+#   - LICENSE
+#   - CONTRIBUTING.md
+#   - src/config.py
+#   - src/main.py
 # - Create the src/package_name/ folder
 
 # ================================ Repository ================================ #
@@ -20,6 +27,7 @@ description: "A brief description of your package"
 
 project_name: "Projectname"
 project_url: "https://your-project-url.com"
+project_domain: "your-project-domain.com"
 chrome_extension_url: "https://chromewebstore.google.com/detail/example"
 firefox_extension_url: "https://addons.mozilla.org/firefox/addon/example"
 edge_extension_url: "https://microsoftedge.microsoft.com/addons/detail/example"
