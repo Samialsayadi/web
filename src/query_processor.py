@@ -6,11 +6,6 @@ from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
 
-from placeholder.query_ingestion import run_ingest_query
-from placeholder.query_parser import ParsedQuery, parse_query
-from placeholder.repository_clone import CloneConfig, clone_repo
-from server_utils import Colors
-
 templates = Jinja2Templates(directory="templates")
 
 
@@ -54,7 +49,6 @@ async def process_query(
     )
 
     return template_response(context=context)
-
 
 
 def _print_error() -> None:

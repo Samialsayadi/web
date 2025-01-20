@@ -1,7 +1,5 @@
 """ Utility functions for the server. """
 
-import math
-
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 
