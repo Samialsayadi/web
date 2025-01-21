@@ -70,7 +70,7 @@ function handleSubmit(event, showLoading = false) {
                 <span class="ml-2">Processing...</span>
             </div>
         `;
-        submitButton.classList.add('bg-[#88C0D5]');
+        submitButton.classList.add('bg-[#F678A7]');
     }
 
     // Submit the form
