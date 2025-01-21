@@ -34,48 +34,48 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
 
 1. Use this template by clicking "Use this template" on GitHub or clone it:
 
-"""
+```bash
 git clone https://github.com/atyrode/gitemplate.git
 cd gitemplate
-"""
+```
 
 2. Set up your project details in `template.yaml`:
 
-"""
+```yaml
 author: "Your Name"
 package_name: "your_package"
 project_name: "Your Project"
 # ... (see template.yaml for all options)
-"""
+```
 
 3. Apply the template:
 
-"""
+```bash
 chmod +x apply_template.sh
 ./apply_template.sh
-"""
+```
 
 4. Install dependencies:
 
-"""
+```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: `.venv\Scripts\activate`
 pip install -r requirements-dev.txt
 pre-commit install
-"""
+```
 
 5. Run the development server:
 
-"""
+```bash
 cd src
 python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
-"""
+```
 
 Visit `http://localhost:8000` to see your application running!
 
 ## Project Structure
 
-"""
+```
 ├── src/
 │   ├── static/          # Static files (CSS, JS, images)
 │   ├── templates/       # Jinja2 templates
@@ -86,21 +86,21 @@ Visit `http://localhost:8000` to see your application running!
 ├── Dockerfile         # Docker configuration
 ├── requirements.txt   # Production dependencies
 └── requirements-dev.txt  # Development dependencies
-"""
+```
 
 ## Development
 
 ### Running Tests
 
-"""
+```bash
 pytest
-"""
+```
 
 ### Code Formatting
 
 The project uses pre-commit hooks to maintain code quality:
 
-"""
+```bash
 # Format code
 black .
 
@@ -109,16 +109,16 @@ isort .
 
 # Lint code
 pylint src/
-"""
+```
 
 ### Docker Support
 
 Build and run using Docker:
 
-"""
+```bash
 docker build -t your-app-name .
 docker run -p 8000:8000 your-app-name
-"""
+```
 
 ## Customization
 
