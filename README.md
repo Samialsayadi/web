@@ -1,5 +1,7 @@
 # Gitemplate
 
+[![Image](./docs/frontpage.png "Gitemplate main page")](https://gitemplate.com)
+
 A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
