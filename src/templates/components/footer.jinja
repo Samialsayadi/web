@@ -3,7 +3,7 @@
         <div class="grid grid-cols-3 items-center text-gray-900 text-sm">
             <!-- Left column - GitHub links -->
             <div class="flex items-center space-x-4">
-                <a href="https://github.com/cyclotruc/gitingest"
+                <a href="https://github.com/{!{ github_username }!}/{!{ github_repository }!}"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:underline flex items-center">
@@ -19,15 +19,15 @@
             <div class="flex justify-center items-center">
                 <div class="flex items-center">
                     made with ❤️ by
-                    <a href="https://bsky.app/profile/yasbaltrine.bsky.social"
+                    <a href="{!{ author_social }!}"
                        target="_blank"
                        rel="noopener noreferrer"
-                       class="ml-1 hover:underline">@rom2</a>
+                       class="ml-1 hover:underline">{!{ author_nickname }!}</a>
                 </div>
             </div>
             <!-- Right column - Discord -->
             <div class="flex justify-end">
-                <a href="https://discord.gg/zerRaGK9EC"
+                <a href="{!{ discord_invite }!}"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="hover:underline flex items-center">

@@ -1,5 +1,5 @@
 # This file will be used to:
-# - Edit the files that have been templated
+# - Edit the files that have been templated:
 #   - README.md
 #   - pyproject.toml
 #   - SECURITY.md
@@ -8,6 +8,9 @@
 #   - src/config.py
 #   - src/main.py
 #   - src/static/robots.txt
+#   - src/templates/base.jinja* Jinja files use the {!{ ... }!} syntax to insert variables
+#   - src/templates/components/footer.jinja
+#   - src/templates/components/navbar.jinja
 # - Create the src/package_name/ folder
 # - Rename the src/placeholder/ folder to src/package_name/
 # - Rename the placeholder imports in the files to the package_name
@@ -15,10 +18,18 @@
 # Manual chores needed:
 # - Update the static files (favicons, og-image.png, etc.)
 
+# Palette used for the template:
+# https://coolors.co/5baac2-88c0d5-add2e4-d6e9f2-ffffff-fcd9e6-f5a3be-ec6f94-e5386c
+
+# Devs:
+# Go to src and run `python -m uvicorn main:app --host 0.0.0.0 --port 8000`
+
 # ================================ Repository ================================ #
 
 author: "Your Name"
 author_email: "your.email@example.com"
+author_social: "https://your-social-link.com"
+author_nickname: "@your_nickname"
 security_email: "your.email@example.com"
 github_username: "your_github_username"
 github_repository: "your_github_repository"
@@ -28,6 +39,7 @@ github_repository: "your_github_repository"
 package_name: "your_package_name"
 package_version: "0.1.0"
 package_description: "A brief description of your package"
+package_keywords: "AI tools, LLM integration, Context, Prompt, Git workflow, Git repository, Git automation, prompt-friendly"
 
 # ================================= Project ================================== #
 
