@@ -5,16 +5,12 @@ import inspect
 import shutil
 
 from config import TMP_BASE_PATH
-from placeholder.query_ingestion import run_ingest_query
 from placeholder.query_parser import ParsedQuery, parse_query
 from placeholder.repository_clone import CloneConfig, clone_repo
 
 
 async def ingest(
     source: str,
-    max_file_size: int = 10 * 1024 * 1024,  # 10 MB
-    include_patterns: set[str] | str | None = None,
-    exclude_patterns: set[str] | str | None = None,
     output: str | None = None,
 ) -> tuple[str, str, str]:
     """
@@ -28,13 +24,6 @@ async def ingest(
     ----------
     source : str
         The source to analyze, which can be a URL (for a Git repository) or a local directory path.
-    max_file_size : int
-        Maximum allowed file size for file ingestion. Files larger than this size are ignored, by default
-        10*1024*1024 (10 MB).
-    include_patterns : set[str] | str | None, optional
-        Pattern or set of patterns specifying which files to include. If `None`, all files are included.
-    exclude_patterns : set[str] | str | None, optional
-        Pattern or set of patterns specifying which files to exclude. If `None`, no files are excluded.
     output : str | None, optional
         File path where the summary and content should be written. If `None`, the results are not written to a file.
 
@@ -54,10 +43,7 @@ async def ingest(
     try:
         parsed_query: ParsedQuery = await parse_query(
             source=source,
-            max_file_size=max_file_size,
             from_web=False,
-            include_patterns=include_patterns,
-            ignore_patterns=exclude_patterns,
         )
 
         if parsed_query.url:
@@ -75,7 +61,7 @@ async def ingest(
             else:
                 raise TypeError("clone_repo did not return a coroutine as expected.")
 
-        summary, tree, content = run_ingest_query(parsed_query)
+        summary, tree, content = "", "", ""
 
         if output is not None:
             with open(output, "w", encoding="utf-8") as f:

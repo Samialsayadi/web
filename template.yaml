@@ -19,7 +19,7 @@
 # - Update the static files (favicons, og-image.png, etc.)
 
 # Palette used for the template:
-# https://coolors.co/5baac2-88c0d5-add2e4-d6e9f2-ffffff-fcd9e6-f5a3be-ec6f94-e5386c
+# https://coolors.co/4a8394-62aec5-88c0d5-add2e4-ffffff-f678a7-ee5c8d-e64072-d91c55
 
 # Devs:
 # Go to src and run `python -m uvicorn main:app --host 0.0.0.0 --port 8000`

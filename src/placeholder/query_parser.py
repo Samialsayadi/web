@@ -9,9 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
-from config import MAX_FILE_SIZE, TMP_BASE_PATH
+from config import TMP_BASE_PATH
 from placeholder.exceptions import InvalidPatternError
-from placeholder.ignore_patterns import DEFAULT_IGNORE_PATTERNS
 from placeholder.repository_clone import _check_repo_exists, fetch_remote_branch_list
 
 HEX_DIGITS: set[str] = set(string.hexdigits)
@@ -42,18 +41,11 @@ class ParsedQuery:  # pylint: disable=too-many-instance-attributes
     type: str | None = None
     branch: str | None = None
     commit: str | None = None
-    max_file_size: int = MAX_FILE_SIZE
-    ignore_patterns: set[str] | None = None
-    include_patterns: set[str] | None = None
-    pattern_type: str | None = None
 
 
 async def parse_query(
     source: str,
-    max_file_size: int,
     from_web: bool,
-    include_patterns: set[str] | str | None = None,
-    ignore_patterns: set[str] | str | None = None,
 ) -> ParsedQuery:
     """
     Parse the input source (URL or path) to extract relevant details for the query.
@@ -66,14 +58,8 @@ async def parse_query(
     ----------
     source : str
         The source URL or file path to parse.
-    max_file_size : int
-        The maximum file size in bytes to include.
     from_web : bool
         Flag indicating whether the source is a web URL.
-    include_patterns : set[str] | str | None, optional
-        Patterns to include, by default None. Can be a set of strings or a single string.
-    ignore_patterns : set[str] | str | None, optional
-        Patterns to ignore, by default None. Can be a set of strings or a single string.
 
     Returns
     -------
@@ -89,18 +75,6 @@ async def parse_query(
         # Local path scenario
         parsed_query = _parse_path(source)
 
-    # Combine default ignore patterns + custom patterns
-    ignore_patterns_set = DEFAULT_IGNORE_PATTERNS.copy()
-    if ignore_patterns:
-        ignore_patterns_set.update(_parse_patterns(ignore_patterns))
-
-    # Process include patterns and override ignore patterns accordingly
-    if include_patterns:
-        parsed_include = _parse_patterns(include_patterns)
-        ignore_patterns_set = _override_ignore_patterns(ignore_patterns_set, include_patterns=parsed_include)
-    else:
-        parsed_include = None
-
     return ParsedQuery(
         user_name=parsed_query.user_name,
         repo_name=parsed_query.repo_name,
@@ -112,9 +86,6 @@ async def parse_query(
         type=parsed_query.type,
         branch=parsed_query.branch,
         commit=parsed_query.commit,
-        max_file_size=max_file_size,
-        ignore_patterns=ignore_patterns_set,
-        include_patterns=parsed_include,
     )
 
 
@@ -260,89 +231,6 @@ def _is_valid_git_commit_hash(commit: str) -> bool:
     return len(commit) == 40 and all(c in HEX_DIGITS for c in commit)
 
 
-def _normalize_pattern(pattern: str) -> str:
-    """
-    Normalize the given pattern by removing leading separators and appending a wildcard.
-
-    This function processes the pattern string by stripping leading directory separators
-    and appending a wildcard (`*`) if the pattern ends with a separator.
-
-    Parameters
-    ----------
-    pattern : str
-        The pattern to normalize.
-
-    Returns
-    -------
-    str
-        The normalized pattern.
-    """
-    pattern = pattern.lstrip(os.sep)
-    if pattern.endswith(os.sep):
-        pattern += "*"
-    return pattern
-
-
-def _parse_patterns(pattern: set[str] | str) -> set[str]:
-    """
-    Parse and validate file/directory patterns for inclusion or exclusion.
-
-    Takes either a single pattern string or set of pattern strings and processes them into a normalized list.
-    Patterns are split on commas and spaces, validated for allowed characters, and normalized.
-
-    Parameters
-    ----------
-    pattern : set[str] | str
-        Pattern(s) to parse - either a single string or set of strings
-
-    Returns
-    -------
-    set[str]
-        A set of normalized patterns.
-
-    Raises
-    ------
-    InvalidPatternError
-        If any pattern contains invalid characters. Only alphanumeric characters,
-        dash (-), underscore (_), dot (.), forward slash (/), plus (+), and
-        asterisk (*) are allowed.
-    """
-    patterns = pattern if isinstance(pattern, set) else {pattern}
-
-    parsed_patterns: set[str] = set()
-    for p in patterns:
-        parsed_patterns = parsed_patterns.union(set(re.split(",| ", p)))
-
-    # Remove empty string if present
-    parsed_patterns = parsed_patterns - {""}
-
-    # Validate and normalize each pattern
-    for p in parsed_patterns:
-        if not _is_valid_pattern(p):
-            raise InvalidPatternError(p)
-
-    return {_normalize_pattern(p) for p in parsed_patterns}
-
-
-def _override_ignore_patterns(ignore_patterns: set[str], include_patterns: set[str]) -> set[str]:
-    """
-    Remove patterns from ignore_patterns that are present in include_patterns using set difference.
-
-    Parameters
-    ----------
-    ignore_patterns : set[str]
-        The set of ignore patterns to filter.
-    include_patterns : set[str]
-        The set of include patterns to remove from ignore_patterns.
-
-    Returns
-    -------
-    set[str]
-        The filtered set of ignore patterns.
-    """
-    return set(ignore_patterns) - set(include_patterns)
-
-
 def _parse_path(path_str: str) -> ParsedQuery:
     """
     Parse the given file path into a structured query dictionary.
@@ -367,27 +255,6 @@ def _parse_path(path_str: str) -> ParsedQuery:
         slug=f"{path_obj.parent.name}/{path_obj.name}",
         id=str(uuid.uuid4()),
     )
-
-
-def _is_valid_pattern(pattern: str) -> bool:
-    """
-    Validate if the given pattern contains only valid characters.
-
-    This function checks if the pattern contains only alphanumeric characters or one
-    of the following allowed characters: dash (`-`), underscore (`_`), dot (`.`),
-    forward slash (`/`), plus (`+`), or asterisk (`*`).
-
-    Parameters
-    ----------
-    pattern : str
-        The pattern to validate.
-
-    Returns
-    -------
-    bool
-        True if the pattern is valid, otherwise False.
-    """
-    return all(c.isalnum() or c in "-_./+*" for c in pattern)
 
 
 async def try_domains_for_user_and_repo(user_name: str, repo_name: str) -> str:

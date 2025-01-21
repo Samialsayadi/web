@@ -31,30 +31,13 @@ function copyText(className) {
 
 function handleSubmit(event, showLoading = false) {
     event.preventDefault();
-    const form = event.target || document.getElementById('ingestForm');
+    const form = event.target || document.getElementById('mainForm');
     if (!form) return;
 
     const submitButton = form.querySelector('button[type="submit"]');
     if (!submitButton) return;
 
     const formData = new FormData(form);
-
-    // Update file size
-    const slider = document.getElementById('file_size');
-    if (slider) {
-        formData.delete('max_file_size');
-        formData.append('max_file_size', slider.value);
-    }
-
-    // Update pattern type and pattern
-    const patternType = document.getElementById('pattern_type');
-    const pattern = document.getElementById('pattern');
-    if (patternType && pattern) {
-        formData.delete('pattern_type');
-        formData.delete('pattern');
-        formData.append('pattern_type', patternType.value);
-        formData.append('pattern', pattern.value);
-    }
 
     const originalContent = submitButton.innerHTML;
     const currentStars = document.getElementById('github-stars')?.textContent;
@@ -88,8 +71,6 @@ function handleSubmit(event, showLoading = false) {
 
             // Wait for next tick to ensure DOM is updated
             setTimeout(() => {
-                // Reinitialize slider functionality
-                initializeSlider();
 
                 const starsElement = document.getElementById('github-stars');
                 if (starsElement && starCount) {
@@ -132,60 +113,16 @@ function copyFullDigest() {
     });
 }
 
-// Add the logSliderToSize helper function
-function logSliderToSize(position) {
-    const minp = 0;
-    const maxp = 500;
-    const minv = Math.log(1);
-    const maxv = Math.log(102400);
-
-    const value = Math.exp(minv + (maxv - minv) * Math.pow(position / maxp, 1.5));
-    return Math.round(value);
-}
-
-// Move slider initialization to a separate function
-function initializeSlider() {
-    const slider = document.getElementById('file_size');
-    const sizeValue = document.getElementById('size_value');
-
-    if (!slider || !sizeValue) return;
-
-    function updateSlider() {
-        const value = logSliderToSize(slider.value);
-        sizeValue.textContent = formatSize(value);
-        slider.style.backgroundSize = `${(slider.value / slider.max) * 100}% 100%`;
-    }
-
-    // Update on slider change
-    slider.addEventListener('input', updateSlider);
-
-    // Initialize slider position
-    updateSlider();
-}
-
-// Add helper function for formatting size
-function formatSize(sizeInKB) {
-    if (sizeInKB >= 1024) {
-        return Math.round(sizeInKB / 1024) + 'mb';
-    }
-    return Math.round(sizeInKB) + 'kb';
-}
-
-// Initialize slider on page load
-document.addEventListener('DOMContentLoaded', initializeSlider);
-
 // Make sure these are available globally
 window.copyText = copyText;
 
 window.handleSubmit = handleSubmit;
-window.initializeSlider = initializeSlider;
-window.formatSize = formatSize;
 
 // Add this new function
 function setupGlobalEnterHandler() {
     document.addEventListener('keydown', function (event) {
         if (event.key === 'Enter' && !event.target.matches('textarea')) {
-            const form = document.getElementById('ingestForm');
+            const form = document.getElementById('mainForm');
             if (form) {
                 handleSubmit(new Event('submit'), true);
             }
@@ -195,6 +132,5 @@ function setupGlobalEnterHandler() {
 
 // Add to the DOMContentLoaded event listener
 document.addEventListener('DOMContentLoaded', () => {
-    initializeSlider();
     setupGlobalEnterHandler();
 });
