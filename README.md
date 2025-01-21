@@ -1,85 +1,140 @@
-# {{ project_name }}
+# Gitemplate
 
-[![Image](./docs/frontpage.png "{{ project_name }} main page")]({{ project_url }})
+A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
 
-{{ project_badges }}
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-[![Discord](https://dcbadge.limes.pink/api/server/{{ discord_invite }})]({{ discord_invite }})
+## Features
 
-{{ project_description }}
+- **Production-Ready Structure**: Organized project layout following best practices
+- **Modern Stack**: FastAPI, Jinja2, and TailwindCSS integration
+- **Developer Experience**: 
+  - Pre-configured development tools (Black, isort, pylint)
+  - Hot-reload for development
+  - Type hints and comprehensive docstrings
+- **Template System**: 
+  - Easy customization through `template.yaml`
+  - Automatic placeholder replacement
+  - Smart Jinja2 template handling
+- **Security**: 
+  - Built-in rate limiting
+  - Trusted host middleware
+  - Security headers configuration
+- **Deployment Ready**:
+  - Docker support
+  - GitHub Actions workflow for PyPI publishing
+  - Health check endpoints
 
-{{ project_url }} · [Chrome Extension]({{ chrome_extension_url }}) · [Firefox Add-on]({{ firefox_extension_url }})
+## Quick Start
 
-## 🚀 Features
+1. Use this template by clicking "Use this template" on GitHub or clone it:
 
-{{ project_features }}
+"""
+git clone https://github.com/atyrode/gitemplate.git
+cd gitemplate
+"""
 
-## 📦 Installation
+2. Set up your project details in `template.yaml`:
 
-``` bash
-pip install {{ package_name }}
-```
+"""
+author: "Your Name"
+package_name: "your_package"
+project_name: "Your Project"
+# ... (see template.yaml for all options)
+"""
 
-## 🧩 Browser Extension Usage
+3. Apply the template:
 
-<!-- markdownlint-disable MD033 -->
-<a href="{{ chrome_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Chrome Web Store"><img height="48" src="https://github.com/user-attachments/assets/20a6e44b-fd46-4e6c-8ea6-aad436035753" alt="Available in the Chrome Web Store" /></a>
-<a href="{{ firefox_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Firefox Add-ons"><img height="48" src="https://github.com/user-attachments/assets/c0e99e6b-97cf-4af2-9737-099db7d3538b" alt="Get The Add-on for Firefox" /></a>
-<a href="{{ edge_extension_url }}" target="_blank" title="Get {{ project_name }} Extension from Edge Add-ons"><img height="48" src="https://github.com/user-attachments/assets/204157eb-4cae-4c0e-b2cb-db514419fd9e" alt="Get from the Edge Add-ons" /></a>
-<!-- markdownlint-enable MD033 -->
+"""
+chmod +x apply_template.sh
+./apply_template.sh
+"""
 
-{{ project_extension_informations }}
+4. Install dependencies:
 
-## 💡 Command line usage
+"""
+python -m venv .venv
+source .venv/bin/activate  # On Windows: `.venv\Scripts\activate`
+pip install -r requirements-dev.txt
+pre-commit install
+"""
 
-{{ project_command_line_usage }}
+5. Run the development server:
 
-## 🐛 Python package usage
+"""
+cd src
+python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
+"""
 
-{{ project_python_package_usage }}
+Visit `http://localhost:8000` to see your application running!
 
-## 🌐 Self-host
+## Project Structure
 
-1. Build the image:
+"""
+├── src/
+│   ├── static/          # Static files (CSS, JS, images)
+│   ├── templates/       # Jinja2 templates
+│   ├── routers/         # FastAPI route modules
+│   ├── config.py        # Configuration settings
+│   └── main.py         # FastAPI application entry point
+├── tests/              # Test files
+├── Dockerfile         # Docker configuration
+├── requirements.txt   # Production dependencies
+└── requirements-dev.txt  # Development dependencies
+"""
 
-   ``` bash
-   docker build -t {{ package_name }} .
-   ```
+## Development
 
-2. Run the container:
+### Running Tests
 
-   ``` bash
-   docker run -d --name {{ package_name }} -p 8000:8000 {{ package_name }}
-   ```
+"""
+pytest
+"""
 
-The application will be available at `http://localhost:8000`.
+### Code Formatting
 
-If you are hosting it on a domain, you can specify the allowed hostnames via env variable `ALLOWED_HOSTS`.
+The project uses pre-commit hooks to maintain code quality:
 
-   ```bash
-   # Default: "{{ project_domain }}, *.{{ project_domain }}, localhost, 127.0.0.1".
-   ALLOWED_HOSTS="example.com, localhost, 127.0.0.1"
-   ```
+"""
+# Format code
+black .
 
-## ✔️ Contributing to {{ project_name }}
+# Sort imports
+isort .
 
-### Non-technical ways to contribute
+# Lint code
+pylint src/
+"""
 
-- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub. This will help us track and prioritize your request.
-- **Spread the Word**: If you like {{ project_name }}, please share it with your friends, colleagues, and on social media. This will help us grow the community and make {{ project_name }} even better.
-- **Use {{ project_name }}**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub or by reaching out to us on [Discord]({{ discord_invite }}).
+### Docker Support
 
-### Technical ways to contribute
+Build and run using Docker:
 
-{{ project_name }} aims to be friendly for first time contributors, with a simple python and html codebase. If you need any help while working with the code, reach out to us on [Discord]({{ discord_invite }}). For detailed instructions on how to make a pull request, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+"""
+docker build -t your-app-name .
+docker run -p 8000:8000 your-app-name
+"""
 
-## 🛠️ Stack
+## Customization
 
-- [Tailwind CSS](https://tailwindcss.com) - Frontend
-- [FastAPI](https://github.com/fastapi/fastapi) - Backend framework
-- [Jinja2](https://jinja.palletsprojects.com) - HTML templating
-- [apianalytics.dev](https://www.apianalytics.dev) - Simple Analytics
+1. Update `template.yaml` with your project details
+2. Modify Jinja2 templates in `src/templates/`
+3. Add routes in `src/routers/`
+4. Customize styling using TailwindCSS classes
 
-## Project Growth
+## Contributing
 
-[![Star History Chart](https://api.star-history.com/svg?repos={{ github_username }}/{{ github_repository }}&type=Date)](https://star-history.com/#{{ github_username }}/{{ github_repository }}&Date)
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [FastAPI](https://fastapi.tiangolo.com/) for the amazing web framework
+- [Jinja2](https://jinja.palletsprojects.com/) for templating
+- [TailwindCSS](https://tailwindcss.com/) for styling
