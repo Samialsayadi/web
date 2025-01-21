@@ -1,4 +1,4 @@
-""" Utility functions for the Gitingest package. """
+""" Utility functions for the application. """
 
 import asyncio
 import functools

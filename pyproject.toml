@@ -26,7 +26,7 @@ classifiers=[
 ]
 
 [project.scripts]
-{{ package_name }} = "{{ package_name }}.cli:main"
+{{ package_name }} = "{{ package_name }}.cli:cli"
 
 [project.urls]
 homepage = "{{ project_url }}"

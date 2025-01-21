@@ -5,3 +5,4 @@ python-dotenv
 slowapi
 starlette
 uvicorn
+gitingest

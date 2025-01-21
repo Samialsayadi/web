@@ -1,4 +1,4 @@
-""" Command-line interface for the Gitingest package. """
+""" Command-line interface for the application. """
 
 # pylint: disable=no-value-for-parameter
 
@@ -6,13 +6,12 @@ import asyncio
 
 import click
 
-from placeholder.repository_ingest import ingest
-
+from placeholder.main import main
 
 @click.command()
 @click.argument("source", type=str, default=".")
 @click.option("--output", "-o", default=None, help="Output file path (default: <repo_name>.txt in current directory)")
-def main(
+def cli(
     source: str,
     output: str | None,
 ):
@@ -30,10 +29,10 @@ def main(
         to a file named `<repo_name>.txt` in the current directory.
     """
     # Main entry point for the CLI. This function is called when the CLI is run as a script.
-    asyncio.run(_async_main(source, output))
+    asyncio.run(_async_cli(source, output))
 
 
-async def _async_main(
+async def _async_cli(
     source: str,
     output: str | None,
 ) -> None:
@@ -60,11 +59,11 @@ async def _async_main(
 
         if not output:
             output = "digest.txt"
-        summary, _, _ = await ingest(source, output=output)
+        result = main(source, output)
 
         click.echo(f"Analysis complete! Output written to: {output}")
         click.echo("\nSummary:")
-        click.echo(summary)
+        click.echo(result)
 
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
