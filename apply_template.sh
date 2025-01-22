@@ -114,12 +114,28 @@ fi
 
 echo -e "\n${GREEN}Template application completed!${NC}"
 
+# Show preview of files to be deleted/renamed
+echo -e "\n${YELLOW}Preview of cleanup operations:${NC}"
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+if [ -f "template.yaml" ]; then
+    echo -e "🗑️  template.yaml"
+fi
+echo -e "🗑️  $0"
+if [ -f "README.md.bak" ]; then
+    echo -e "🗑️  README.md.bak"
+fi
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
 # Ask about deletion
-echo -e "\n${YELLOW}Would you like to delete the template files? (Y/N)${NC}"
+echo -e "\n${YELLOW}Would you like to proceed with cleanup? (Y/N)${NC}"
 read -r response
 if [[ "$response" =~ ^[Yy]$ ]]; then
     rm -f template.yaml
     echo -e "${GREEN}✓ Deleted${NC} template.yaml"
+    if [ -f "README.md.bak" ]; then
+        rm -f README.md.bak
+        echo -e "${GREEN}✓ Deleted${NC} README.md.bak"
+    fi
     rm -f "$0"
     echo -e "${GREEN}✓ Deleted${NC} $0"
     echo -e "\n${GREEN}Template files cleaned up. Happy coding!${NC}"
