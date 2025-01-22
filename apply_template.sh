@@ -62,10 +62,11 @@ get_yaml_value() {
 
 # Function to escape special characters for sed
 escape_sed() {
-    # Escape special characters but preserve newlines
+    # Escape special characters but preserve newlines and handle @ symbol
     echo "$1" | sed -e ':a' -e 'N' -e '$!ba' \
-        -e 's/[]\/$*.^[]/\\&/g' \
-        -e 's/\n/\\n/g'
+        -e 's/[]\/$*.^[]/@/\\&/g' \
+        -e 's/\n/\\n/g' \
+        -e 's/@/\\@/g'  # Explicitly escape @ symbol
 }
 
 # Preview template configuration
@@ -133,6 +134,10 @@ for key in "${keys[@]}"; do
     
     if [ ! -z "$value" ]; then
         REPLACEMENTS["$key"]="$(escape_sed "$value")"
+        # Special debug just for author_nickname
+        if [ "$key" = "author_nickname" ]; then
+            echo -e "${YELLOW}Debug author_nickname value: ${REPLACEMENTS[$key]}${NC}"
+        fi
     fi
 done
 
