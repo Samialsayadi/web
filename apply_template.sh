@@ -148,6 +148,12 @@ else
     echo -e "\n${YELLOW}Template files kept. You can delete them manually later.${NC}"
 fi
 
+# Define common strings
+VENV_CREATE_CMD="python3 -m venv venv"
+VENV_ACTIVATE_WIN="venv\\Scripts\\activate"
+VENV_ACTIVATE_UNIX="source venv/bin/activate"
+START_APP_CMD="python3 -m uvicorn src.app:app --host 0.0.0.0 --port 8000"
+
 echo -e "\n${YELLOW}Preview of development environment setup:${NC}"
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "📁 Create: venv/"
@@ -155,9 +161,9 @@ if [ -f "requirements.txt" ]; then
     echo -e "📦 Install: requirements from requirements.txt"
 fi
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-    echo -e "🔧 Activate: venv\\Scripts\\activate"
+    echo -e "🔧 Activate: $VENV_ACTIVATE_WIN"
 else
-    echo -e "🔧 Activate: source venv/bin/activate"
+    echo -e "🔧 Activate: $VENV_ACTIVATE_UNIX"
 fi
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
@@ -165,15 +171,15 @@ echo -e "\n${YELLOW}Would you like to set up the development environment now? (Y
 read -r setup_response
 if [[ "$setup_response" =~ ^[Yy]$ ]]; then
     echo -e "\n${YELLOW}Creating virtual environment...${NC}"
-    python3 -m venv venv
+    $VENV_CREATE_CMD
     
     # Different activation command based on OS
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         echo -e "${YELLOW}Activating virtual environment (Windows)...${NC}"
-        source venv/Scripts/activate
+        source $VENV_ACTIVATE_WIN
     else
         echo -e "${YELLOW}Activating virtual environment (Unix)...${NC}"
-        source venv/bin/activate
+        source $VENV_ACTIVATE_UNIX
     fi
     
     if [ -f "requirements.txt" ]; then
@@ -183,21 +189,27 @@ if [[ "$setup_response" =~ ^[Yy]$ ]]; then
     fi
     
     echo -e "\n${GREEN}Development environment is ready!${NC}"
-    echo -e "\n${YELLOW}To start the application, run:${NC}"
-    echo -e "python3 -m uvicorn src.app:app --host 0.0.0.0 --port 8000"
+    echo -e "\n${YELLOW}To activate the environment:${NC}"
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        echo -e "$VENV_ACTIVATE_WIN"
+    else
+        echo -e "$VENV_ACTIVATE_UNIX"
+    fi
+    echo -e "\n${YELLOW}To start the application:${NC}"
+    echo -e "$START_APP_CMD"
 else
     echo -e "\n${YELLOW}To set up the development environment later:${NC}"
     echo -e "1. Create and activate a virtual environment:"
-    echo -e "   python3 -m venv venv"
+    echo -e "   $VENV_CREATE_CMD"
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        echo -e "   venv\\Scripts\\activate  # On Windows"
+        echo -e "   $VENV_ACTIVATE_WIN  # On Windows"
     else
-        echo -e "   source venv/bin/activate  # On Unix-like systems"
+        echo -e "   $VENV_ACTIVATE_UNIX  # On Unix-like systems"
     fi
     echo -e "\n2. Install the requirements:"
     echo -e "   pip install -r requirements.txt"
     echo -e "\n3. Start the application:"
-    echo -e "   python3 -m uvicorn src.app:app --host 0.0.0.0 --port 8000"
+    echo -e "   $START_APP_CMD"
 fi
 
 echo -e "\n${GREEN}Happy coding!${NC}"
