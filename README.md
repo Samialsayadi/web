@@ -144,3 +144,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [FastAPI](https://fastapi.tiangolo.com/) for the amazing web framework
 - [Jinja2](https://jinja.palletsprojects.com/) for templating
 - [TailwindCSS](https://tailwindcss.com/) for styling
+- [Gitingest](https://gitingest.com/) for the inspiration
