@@ -25,9 +25,9 @@ if [ -f "example_README.md" ]; then
     echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
     read -r readme_response
     if [[ "$readme_response" =~ ^[Yy]$ ]]; then
-        mv README.md README.md.bak
+        mv README.md README.old.md
         mv example_README.md README.md
-        echo -e "${GREEN}✓ Swapped${NC} README files (original backed up as README.md.bak)"
+        echo -e "${GREEN}✓ Swapped${NC} README files (original backed up as README.old.md)"
     else
         echo -e "${YELLOW}Keeping original README.md${NC}"
     fi
