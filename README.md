@@ -1,4 +1,4 @@
-# Gitemplate
+# 🎨 Gitemplate
 
 [![Image](./docs/frontpage.png "Gitemplate main page")](https://gitemplate.com)
 
@@ -9,7 +9,7 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## Features
+## ✨ Features
 
 - **Production-Ready Structure**: Organized project layout following best practices
 - **Modern Stack**: FastAPI, Jinja2, and TailwindCSS integration
@@ -30,7 +30,7 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
   - GitHub Actions workflow for PyPI publishing
   - Health check endpoints
 
-## Quick Start
+## 🚀 Quick Start
 
 1. Use this template by clicking "Use this template" on GitHub or clone it:
 
@@ -73,7 +73,7 @@ python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
 Visit `http://localhost:8000` to see your application running!
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 ├── src/
@@ -92,7 +92,7 @@ Visit `http://localhost:8000` to see your application running!
 └── requirements-dev.txt    # Development dependencies
 ```
 
-## Development
+## 💻 Development
 
 ### Running Tests
 
@@ -124,22 +124,22 @@ docker build -t your-app-name .
 docker run -p 8000:8000 your-app-name
 ```
 
-## Customization
+## 🔧 Customization
 
 1. Update `template.yaml` with your project details
 2. Modify Jinja2 templates in `src/templates/`
 3. Add routes in `src/routers/`
 4. Customize styling using TailwindCSS classes
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - [FastAPI](https://fastapi.tiangolo.com/) for the amazing web framework
 - [Jinja2](https://jinja.palletsprojects.com/) for templating
