@@ -152,7 +152,7 @@ fi
 VENV_CREATE_CMD="python3 -m venv venv"
 VENV_ACTIVATE_WIN="venv\\Scripts\\activate"
 VENV_ACTIVATE_UNIX="source venv/bin/activate"
-START_APP_CMD="python3 -m uvicorn src.app:app --host 0.0.0.0 --port 8000"
+START_APP_CMD="cd src && python3 -m uvicorn app:app --host 0.0.0.0 --port 8000"
 
 echo -e "\n${YELLOW}Preview of development environment setup:${NC}"
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
