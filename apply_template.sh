@@ -20,10 +20,17 @@ escape_sed() {
 
 echo -e "${YELLOW}Starting template application...${NC}"
 
-# Replace example README with actual README
+# Prompt for README swap
 if [ -f "example_README.md" ]; then
-    mv example_README.md README.md
-    echo -e "${GREEN}✓ Replaced${NC} README.md"
+    echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
+    read -r readme_response
+    if [[ "$readme_response" =~ ^[Yy]$ ]]; then
+        mv README.md README.md.bak
+        mv example_README.md README.md
+        echo -e "${GREEN}✓ Swapped${NC} README files (original backed up as README.md.bak)"
+    else
+        echo -e "${YELLOW}Keeping original README.md${NC}"
+    fi
 fi
 
 # Define the patterns to search for files
