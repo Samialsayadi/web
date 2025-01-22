@@ -29,8 +29,36 @@ escape_sed() {
     echo "$1" | sed -e 's/[\/&]/\\&/g'
 }
 
-echo -e "${YELLOW}Starting template application...${NC}"
+# Preview template configuration
+echo -e "${YELLOW}Template Configuration Preview:${NC}"
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e "📦 Project Details:"
+echo -e "   Project Name: $(get_yaml_value "project_name")"
+echo -e "   Package Name: $(get_yaml_value "package_name")"
+echo -e "   Description: $(get_yaml_value "package_description")"
+echo -e "\n👤 Author Details:"
+echo -e "   Author: $(get_yaml_value "author")"
+echo -e "   GitHub: $(get_yaml_value "github_username")"
+echo -e "\n🔗 URLs:"
+echo -e "   Repository: $(get_yaml_value "github_repository")"
+echo -e "   Project URL: $(get_yaml_value "project_url")"
+echo -e "   ... more in template.yaml"
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+if [ "$AUTO_YES" = false ]; then
+    echo -e "\n${YELLOW}Would you like to apply this configuration? (Y/N)${NC}"
+    read -r config_response
+else
+    config_response="y"
+    echo -e "\n${YELLOW}Auto-accepting configuration${NC}"
+fi
+
+if [[ ! "$config_response" =~ ^[Yy]$ ]]; then
+    echo -e "${RED}Template application cancelled.${NC}"
+    exit 1
+fi
+
+echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
 # Define the patterns to search for files
 PATTERNS=(
