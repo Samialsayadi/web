@@ -34,7 +34,7 @@ echo -e "${YELLOW}Starting template application...${NC}"
 
 # Define the patterns to search for files
 PATTERNS=(
-    "README.md"
+    "example_README.md"
     "pyproject.toml"
     "SECURITY.md"
     "LICENSE"
@@ -66,30 +66,6 @@ declare -A REPLACEMENTS=(
     ["project_domain"]="$(escape_sed "$(get_yaml_value "project_domain")")"
 )
 
-# Prompt for README swap with preview
-if [ -f "example_README.md" ]; then
-    echo -e "\n${YELLOW}Preview of README swap operation:${NC}"
-    echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "📄 README.md → README.old.md"
-    echo -e "📄 example_README.md → README.md"
-    echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    
-    if [ "$AUTO_YES" = false ]; then
-        echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
-        read -r readme_response
-    else
-        readme_response="y"
-        echo -e "\n${YELLOW}Auto-accepting README swap${NC}"
-    fi
-    
-    if [[ "$readme_response" =~ ^[Yy]$ ]]; then
-        mv README.md README.old.md
-        mv example_README.md README.md
-        echo -e "${GREEN}✓ Swapped${NC} README files (original backed up as README.old.md)"
-    else
-        echo -e "${YELLOW}Keeping original README.md${NC}"
-    fi
-fi
 
 # Function to replace placeholders in a file
 replace_placeholders() {
@@ -144,6 +120,31 @@ done
 if [ -d "src/placeholder" ]; then
     mv "src/placeholder" "src/${REPLACEMENTS[package_name]}"
     echo -e "${GREEN}✓ Renamed${NC} src/placeholder to src/${REPLACEMENTS[package_name]}"
+fi
+
+# Prompt for README swap with preview
+if [ -f "example_README.md" ]; then
+    echo -e "\n${YELLOW}Preview of README swap operation:${NC}"
+    echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "📄 README.md → README.old.md"
+    echo -e "📄 example_README.md → README.md"
+    echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    
+    if [ "$AUTO_YES" = false ]; then
+        echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
+        read -r readme_response
+    else
+        readme_response="y"
+        echo -e "\n${YELLOW}Auto-accepting README swap${NC}"
+    fi
+    
+    if [[ "$readme_response" =~ ^[Yy]$ ]]; then
+        mv README.md README.old.md
+        mv example_README.md README.md
+        echo -e "${GREEN}✓ Swapped${NC} README files (original backed up as README.old.md)"
+    else
+        echo -e "${YELLOW}Keeping original README.md${NC}"
+    fi
 fi
 
 echo -e "\n${GREEN}Template application completed!${NC}"
