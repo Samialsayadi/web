@@ -51,8 +51,8 @@ PATTERNS=(
     "src/templates/*.jinja"
     "src/templates/components/*.jinja"
     "src/placeholder/__init__.py"
-    "src/routers/*.py"
     "src/**/*.py"
+    "src/*.py"
 )
 
 # Read values from template.yaml and escape them
