@@ -60,13 +60,10 @@ get_yaml_value() {
     yq eval ".$key" template.yaml
 }
 
-# Function to escape special characters for sed
-escape_sed() {
-    # Escape special characters but preserve newlines and handle @ symbol
-    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' \
-        -e 's/[]\/$*.^[]/@/\\&/g' \
-        -e 's/\n/\\n/g' \
-        -e 's/@/\\@/g'  # Explicitly escape @ symbol
+# Function to escape special characters using perl instead of sed
+escape_perl() {
+    # Use perl to escape special characters while preserving newlines
+    perl -pe 's/([\/\@\$\*\[\]\.\^\&])/\\$1/g' | perl -pe 's/\n/\\n/g'
 }
 
 # Preview template configuration
@@ -129,11 +126,11 @@ for key in "${keys[@]}"; do
         continue
     fi
     
-    # Get the value for this key
-    value=$(yq eval ".$key" template.yaml)
+    # Get the value for this key and remove any trailing newlines
+    value=$(yq eval ".$key" template.yaml | tr -d '\n')
     
     if [ ! -z "$value" ]; then
-        REPLACEMENTS["$key"]="$(escape_sed "$value")"
+        REPLACEMENTS["$key"]="$(printf '%s' "$value" | escape_perl)"
         # Special debug just for author_nickname
         if [ "$key" = "author_nickname" ]; then
             echo -e "${YELLOW}Debug author_nickname value: ${REPLACEMENTS[$key]}${NC}"
