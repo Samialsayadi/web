@@ -13,6 +13,11 @@ get_yaml_value() {
     grep "^$key:" "$yaml_file" | awk -F': ' '{print $2}' | sed 's/"//g'
 }
 
+# Function to escape special characters for sed
+escape_sed() {
+    echo "$1" | sed -e 's/[\/&]/\\&/g'
+}
+
 echo -e "${YELLOW}Starting template application...${NC}"
 
 # Replace example README with actual README
@@ -36,21 +41,21 @@ PATTERNS=(
     "src/placeholder/__init__.py"
 )
 
-# Read values from template.yaml
+# Read values from template.yaml and escape them
 declare -A REPLACEMENTS=(
-    ["author"]="$(get_yaml_value "author")"
-    ["author_email"]="$(get_yaml_value "author_email")"
-    ["author_social"]="$(get_yaml_value "author_social")"
-    ["author_nickname"]="$(get_yaml_value "author_nickname")"
-    ["security_email"]="$(get_yaml_value "security_email")"
-    ["github_username"]="$(get_yaml_value "github_username")"
-    ["github_repository"]="$(get_yaml_value "github_repository")"
-    ["package_name"]="$(get_yaml_value "package_name")"
-    ["package_version"]="$(get_yaml_value "package_version")"
-    ["package_description"]="$(get_yaml_value "package_description")"
-    ["project_name"]="$(get_yaml_value "project_name")"
-    ["project_url"]="$(get_yaml_value "project_url")"
-    ["project_domain"]="$(get_yaml_value "project_domain")"
+    ["author"]="$(escape_sed "$(get_yaml_value "author")")"
+    ["author_email"]="$(escape_sed "$(get_yaml_value "author_email")")"
+    ["author_social"]="$(escape_sed "$(get_yaml_value "author_social")")"
+    ["author_nickname"]="$(escape_sed "$(get_yaml_value "author_nickname")")"
+    ["security_email"]="$(escape_sed "$(get_yaml_value "security_email")")"
+    ["github_username"]="$(escape_sed "$(get_yaml_value "github_username")")"
+    ["github_repository"]="$(escape_sed "$(get_yaml_value "github_repository")")"
+    ["package_name"]="$(escape_sed "$(get_yaml_value "package_name")")"
+    ["package_version"]="$(escape_sed "$(get_yaml_value "package_version")")"
+    ["package_description"]="$(escape_sed "$(get_yaml_value "package_description")")"
+    ["project_name"]="$(escape_sed "$(get_yaml_value "project_name")")"
+    ["project_url"]="$(escape_sed "$(get_yaml_value "project_url")")"
+    ["project_domain"]="$(escape_sed "$(get_yaml_value "project_domain")")"
 )
 
 # Function to replace placeholders in a file
