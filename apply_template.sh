@@ -131,10 +131,6 @@ for key in "${keys[@]}"; do
     
     if [ ! -z "$value" ]; then
         REPLACEMENTS["$key"]="$(printf '%s' "$value" | escape_perl)"
-        # Special debug just for author_nickname
-        if [ "$key" = "author_nickname" ]; then
-            echo -e "${YELLOW}Debug author_nickname value: ${REPLACEMENTS[$key]}${NC}"
-        fi
     fi
 done
 
