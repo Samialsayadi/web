@@ -17,24 +17,66 @@ while getopts "yd" opt; do
     esac
 done
 
-# Function to read YAML values, handling multiline content
-get_yaml_value() {
-    local yaml_file="template.yaml"
-    local key=$1
-    # Check if it's a multiline value (contains |)
-    if grep -q "^$key: |" "$yaml_file"; then
-        # Get all lines after the key until the next key or end of file
-        awk "/^$key: \|/{p=NR+1}p&&/^[a-zA-Z]/{exit}p" "$yaml_file" | sed 's/^  //'
-    else
-        # Single line value
-        grep "^$key:" "$yaml_file" | awk -F': ' '{print $2}' | sed 's/"//g'
+# Function to check if yq is installed
+check_yq() {
+    if ! command -v yq &> /dev/null; then
+        echo -e "${YELLOW}The 'yq' command is required (to parse template.yaml) but it's not installed.${NC}"
+        echo -e "Would you like to install it? (Y/N)"
+        if [ "$AUTO_YES" = false ]; then
+            read -r install_response
+        else
+            install_response="y"
+            echo -e "Auto-accepting yq installation"
+        fi
+
+        if [[ "$install_response" =~ ^[Yy]$ ]]; then
+            if command -v brew &> /dev/null; then
+                echo -e "Installing yq via Homebrew..."
+                brew install yq
+            elif command -v apt-get &> /dev/null; then
+                echo -e "Installing yq via apt..."
+                sudo apt-get update && sudo apt-get install -y yq
+            elif command -v dnf &> /dev/null; then
+                echo -e "Installing yq via dnf..."
+                sudo dnf install -y yq
+            else
+                echo -e "${RED}Could not determine package manager. Please install yq manually:${NC}"
+                echo -e "https://github.com/mikefarah/yq#install"
+                exit 1
+            fi
+        else
+            echo -e "${RED}yq is required for this script. Exiting.${NC}"
+            exit 1
+        fi
     fi
+}
+
+# Check for yq at the start
+check_yq
+
+# Function to read YAML values using yq
+get_yaml_value() {
+    local key=$1
+    yq eval ".$key" template.yaml
 }
 
 # Function to escape special characters for sed
 escape_sed() {
-    # Escape special characters and preserve newlines
-    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' -e 's/[\/&]/\\&/g' -e 's/\n/\\n/g'
+    # Escape special characters but preserve newlines
+    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' \
+        -e 's/[]\/$*.^[]/\\&/g' \
+        -e 's/\n/\\n/g'
+}
+
+# Debug function to show the actual content being used for replacement
+debug_yaml_value() {
+    local key=$1
+    local value=$(get_yaml_value "$key")
+    echo -e "\nDEBUG: Content for $key:"
+    echo -e "Raw value from YAML:"
+    echo -e "$value"
+    echo -e "\nEscaped value:"
+    echo -e "$(escape_sed "$value")"
 }
 
 # Preview template configuration
@@ -85,33 +127,37 @@ PATTERNS=(
     "example_README.md"
 )
 
-# Read values from template.yaml and escape them
-declare -A REPLACEMENTS=(
-    ["author"]="$(escape_sed "$(get_yaml_value "author")")"
-    ["author_email"]="$(escape_sed "$(get_yaml_value "author_email")")"
-    ["author_social"]="$(escape_sed "$(get_yaml_value "author_social")")"
-    ["author_nickname"]="$(escape_sed "$(get_yaml_value "author_nickname")")"
-    ["security_email"]="$(escape_sed "$(get_yaml_value "security_email")")"
-    ["github_username"]="$(escape_sed "$(get_yaml_value "github_username")")"
-    ["github_repository"]="$(escape_sed "$(get_yaml_value "github_repository")")"
-    ["package_name"]="$(escape_sed "$(get_yaml_value "package_name")")"
-    ["package_version"]="$(escape_sed "$(get_yaml_value "package_version")")"
-    ["package_description"]="$(escape_sed "$(get_yaml_value "package_description")")"
-    ["project_name"]="$(escape_sed "$(get_yaml_value "project_name")")"
-    ["project_url"]="$(escape_sed "$(get_yaml_value "project_url")")"
-    ["project_domain"]="$(escape_sed "$(get_yaml_value "project_domain")")"
-    ["project_description"]="$(escape_sed "$(get_yaml_value "project_description")")"
-    ["project_badges"]="$(escape_sed "$(get_yaml_value "project_badges")")"
-    ["project_features"]="$(escape_sed "$(get_yaml_value "project_features")")"
-    ["project_extension_informations"]="$(escape_sed "$(get_yaml_value "project_extension_informations")")"
-    ["project_command_line_usage"]="$(escape_sed "$(get_yaml_value "project_command_line_usage")")"
-    ["project_python_package_usage"]="$(escape_sed "$(get_yaml_value "project_python_package_usage")")"
-    ["chrome_extension_url"]="$(escape_sed "$(get_yaml_value "chrome_extension_url")")"
-    ["firefox_extension_url"]="$(escape_sed "$(get_yaml_value "firefox_extension_url")")"
-    ["edge_extension_url"]="$(escape_sed "$(get_yaml_value "edge_extension_url")")"
-    ["discord_invite"]="$(escape_sed "$(get_yaml_value "discord_invite")")"
-)
+# Read all values from template.yaml using yq and escape them
+declare -A REPLACEMENTS
 
+# First, get all the keys
+mapfile -t keys < <(yq eval 'keys | .[]' template.yaml)
+
+echo -e "\n${YELLOW}DEBUG: Loading variables from template.yaml:${NC}"
+for key in "${keys[@]}"; do
+    # Skip comments and empty lines
+    if [[ "$key" =~ ^#.*$ ]] || [ -z "$key" ]; then
+        continue
+    fi
+    
+    # Get the value for this key
+    value=$(yq eval ".$key" template.yaml)
+    
+    if [ ! -z "$value" ]; then
+        REPLACEMENTS["$key"]="$(escape_sed "$value")"
+        echo -e "${YELLOW}Loading: $key${NC}"
+    fi
+done
+
+# Debug output to show all variables
+echo -e "\n${YELLOW}DEBUG: All loaded variables from template.yaml:${NC}"
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+for key in "${!REPLACEMENTS[@]}"; do
+    echo -e "📄 $key:"
+    echo -e "${REPLACEMENTS[$key]}\n"
+done
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo -e "Total variables loaded: ${#REPLACEMENTS[@]}"
 
 # Function to replace placeholders in a file
 replace_placeholders() {
@@ -121,32 +167,24 @@ replace_placeholders() {
         cp "$file" "$temp_file"
         
         echo -e "\n${YELLOW}DEBUG: Processing $file${NC}"
-        echo -e "DEBUG: File type detection:"
-        echo -e "  - Is .jinja? [[ $file == *.jinja ]] = $([[ "$file" == *.jinja ]] && echo "yes" || echo "no")"
-        echo -e "  - Is .py? [[ $file == *.py ]] = $([[ "$file" == *.py ]] && echo "yes" || echo "no")"
-        echo -e "  - Is README? [[ $file == *README* ]] = $([[ "$file" == *"README"* ]] && echo "yes" || echo "no")"
-        
-        # Process all files for variable replacements
         for key in "${!REPLACEMENTS[@]}"; do
             local value=${REPLACEMENTS[$key]}
-            echo -e "DEBUG: Replacing {{ $key }} with: $value"
+            echo -e "DEBUG: Replacing {{ $key }}"
             
             if [[ "$file" == *.jinja ]]; then
-                # For .jinja files, use {!{ }!} format
-                sed -i.bak "s/{!{ ${key} }!}/${value}/g" "$temp_file"
-                echo -e "DEBUG: Used .jinja format"
+                # For .jinja files, use {!{ }!} format with # as delimiter
+                perl -pi -e "s#{!{ ${key} }!}#${value}#g" "$temp_file"
             else
-                # For non-jinja files, use {{ }} format
-                sed -i.bak "s/{{ ${key} }}/${value}/g" "$temp_file"
-                echo -e "DEBUG: Used standard format"
+                # For non-jinja files, use {{ }} format with # as delimiter
+                perl -pi -e "s#{{ ${key} }}#${value}#g" "$temp_file"
             fi
         done
 
         # Additional processing for Python files
         if [[ "$file" == *.py ]]; then
             echo -e "DEBUG: Processing Python imports"
-            sed -i.bak "s/from placeholder\./from ${REPLACEMENTS[package_name]}\./g" "$temp_file"
-            sed -i.bak "s/import placeholder/import ${REPLACEMENTS[package_name]}/g" "$temp_file"
+            perl -pi -e "s#from placeholder\.#from ${REPLACEMENTS[package_name]}.#g" "$temp_file"
+            perl -pi -e "s#import placeholder#import ${REPLACEMENTS[package_name]}#g" "$temp_file"
         fi
         
         mv "$temp_file" "$file"
