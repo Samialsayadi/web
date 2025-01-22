@@ -68,17 +68,6 @@ escape_sed() {
         -e 's/\n/\\n/g'
 }
 
-# Debug function to show the actual content being used for replacement
-debug_yaml_value() {
-    local key=$1
-    local value=$(get_yaml_value "$key")
-    echo -e "\nDEBUG: Content for $key:"
-    echo -e "Raw value from YAML:"
-    echo -e "$value"
-    echo -e "\nEscaped value:"
-    echo -e "$(escape_sed "$value")"
-}
-
 # Preview template configuration
 echo -e "${YELLOW}Template Configuration Preview:${NC}"
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -133,7 +122,6 @@ declare -A REPLACEMENTS
 # First, get all the keys
 mapfile -t keys < <(yq eval 'keys | .[]' template.yaml)
 
-echo -e "\n${YELLOW}DEBUG: Loading variables from template.yaml:${NC}"
 for key in "${keys[@]}"; do
     # Skip comments and empty lines
     if [[ "$key" =~ ^#.*$ ]] || [ -z "$key" ]; then
@@ -145,19 +133,8 @@ for key in "${keys[@]}"; do
     
     if [ ! -z "$value" ]; then
         REPLACEMENTS["$key"]="$(escape_sed "$value")"
-        echo -e "${YELLOW}Loading: $key${NC}"
     fi
 done
-
-# Debug output to show all variables
-echo -e "\n${YELLOW}DEBUG: All loaded variables from template.yaml:${NC}"
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-for key in "${!REPLACEMENTS[@]}"; do
-    echo -e "📄 $key:"
-    echo -e "${REPLACEMENTS[$key]}\n"
-done
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo -e "Total variables loaded: ${#REPLACEMENTS[@]}"
 
 # Function to replace placeholders in a file
 replace_placeholders() {
@@ -166,10 +143,8 @@ replace_placeholders() {
         local temp_file="${file}.tmp"
         cp "$file" "$temp_file"
         
-        echo -e "\n${YELLOW}DEBUG: Processing $file${NC}"
         for key in "${!REPLACEMENTS[@]}"; do
             local value=${REPLACEMENTS[$key]}
-            echo -e "DEBUG: Replacing {{ $key }}"
             
             if [[ "$file" == *.jinja ]]; then
                 # For .jinja files, use {!{ }!} format with # as delimiter
@@ -182,7 +157,6 @@ replace_placeholders() {
 
         # Additional processing for Python files
         if [[ "$file" == *.py ]]; then
-            echo -e "DEBUG: Processing Python imports"
             perl -pi -e "s#from placeholder\.#from ${REPLACEMENTS[package_name]}.#g" "$temp_file"
             perl -pi -e "s#import placeholder#import ${REPLACEMENTS[package_name]}#g" "$temp_file"
         fi
