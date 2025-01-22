@@ -77,15 +77,19 @@ Visit `http://localhost:8000` to see your application running!
 
 ```
 ├── src/
-│   ├── static/          # Static files (CSS, JS, images)
-│   ├── templates/       # Jinja2 templates
-│   ├── routers/         # FastAPI route modules
-│   ├── config.py        # Configuration settings
-│   └── main.py         # FastAPI application entry point
-├── tests/              # Test files
-├── Dockerfile         # Docker configuration
-├── requirements.txt   # Production dependencies
-└── requirements-dev.txt  # Development dependencies
+│   ├── placeholder/        # Core logic
+│   ├── static/             # Static files (CSS, JS, images)
+│   ├── templates/          # Jinja2 templates
+│   ├── routers/            # FastAPI route modules
+│   ├── config.py           # Configuration settings
+│   ├── server_utils.py     # FastAPI utilities
+│   ├── query_processor.py  # FastAPI to core logic connector
+│   └── app.py              # FastAPI application entry point
+├── tests/                  # Test files
+├── Dockerfile              # Docker configuration
+├── pyproject.toml          # Pypi package configuration
+├── requirements.txt        # Production dependencies
+└── requirements-dev.txt    # Development dependencies
 ```
 
 ## Development
