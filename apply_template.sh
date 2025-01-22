@@ -42,7 +42,7 @@ echo -e "   GitHub: $(get_yaml_value "github_username")"
 echo -e "\n🔗 URLs:"
 echo -e "   Repository: $(get_yaml_value "github_repository")"
 echo -e "   Project URL: $(get_yaml_value "project_url")"
-echo -e "   ... more in template.yaml"
+echo -e "\n ... more in template.yaml"
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 if [ "$AUTO_YES" = false ]; then
