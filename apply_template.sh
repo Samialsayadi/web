@@ -17,16 +17,24 @@ while getopts "yd" opt; do
     esac
 done
 
-# Function to read YAML values
+# Function to read YAML values, handling multiline content
 get_yaml_value() {
     local yaml_file="template.yaml"
     local key=$1
-    grep "^$key:" "$yaml_file" | awk -F': ' '{print $2}' | sed 's/"//g'
+    # Check if it's a multiline value (contains |)
+    if grep -q "^$key: |" "$yaml_file"; then
+        # Get all lines after the key until the next key or end of file
+        awk "/^$key: \|/{p=NR+1}p&&/^[a-zA-Z]/{exit}p" "$yaml_file" | sed 's/^  //'
+    else
+        # Single line value
+        grep "^$key:" "$yaml_file" | awk -F': ' '{print $2}' | sed 's/"//g'
+    fi
 }
 
 # Function to escape special characters for sed
 escape_sed() {
-    echo "$1" | sed -e 's/[\/&]/\\&/g'
+    # Escape special characters and preserve newlines
+    echo "$1" | sed -e ':a' -e 'N' -e '$!ba' -e 's/[\/&]/\\&/g' -e 's/\n/\\n/g'
 }
 
 # Preview template configuration
@@ -62,7 +70,6 @@ echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
 # Define the patterns to search for files
 PATTERNS=(
-    "example_README.md"
     "pyproject.toml"
     "SECURITY.md"
     "LICENSE"
@@ -75,6 +82,7 @@ PATTERNS=(
     "src/placeholder/__init__.py"
     "src/**/*.py"
     "src/*.py"
+    "example_README.md"
 )
 
 # Read values from template.yaml and escape them
@@ -92,6 +100,16 @@ declare -A REPLACEMENTS=(
     ["project_name"]="$(escape_sed "$(get_yaml_value "project_name")")"
     ["project_url"]="$(escape_sed "$(get_yaml_value "project_url")")"
     ["project_domain"]="$(escape_sed "$(get_yaml_value "project_domain")")"
+    ["project_description"]="$(escape_sed "$(get_yaml_value "project_description")")"
+    ["project_badges"]="$(escape_sed "$(get_yaml_value "project_badges")")"
+    ["project_features"]="$(escape_sed "$(get_yaml_value "project_features")")"
+    ["project_extension_informations"]="$(escape_sed "$(get_yaml_value "project_extension_informations")")"
+    ["project_command_line_usage"]="$(escape_sed "$(get_yaml_value "project_command_line_usage")")"
+    ["project_python_package_usage"]="$(escape_sed "$(get_yaml_value "project_python_package_usage")")"
+    ["chrome_extension_url"]="$(escape_sed "$(get_yaml_value "chrome_extension_url")")"
+    ["firefox_extension_url"]="$(escape_sed "$(get_yaml_value "firefox_extension_url")")"
+    ["edge_extension_url"]="$(escape_sed "$(get_yaml_value "edge_extension_url")")"
+    ["discord_invite"]="$(escape_sed "$(get_yaml_value "discord_invite")")"
 )
 
 
@@ -102,22 +120,32 @@ replace_placeholders() {
         local temp_file="${file}.tmp"
         cp "$file" "$temp_file"
         
+        echo -e "\n${YELLOW}DEBUG: Processing $file${NC}"
+        echo -e "DEBUG: File type detection:"
+        echo -e "  - Is .jinja? [[ $file == *.jinja ]] = $([[ "$file" == *.jinja ]] && echo "yes" || echo "no")"
+        echo -e "  - Is .py? [[ $file == *.py ]] = $([[ "$file" == *.py ]] && echo "yes" || echo "no")"
+        echo -e "  - Is README? [[ $file == *README* ]] = $([[ "$file" == *"README"* ]] && echo "yes" || echo "no")"
+        
+        # Process all files for variable replacements
         for key in "${!REPLACEMENTS[@]}"; do
             local value=${REPLACEMENTS[$key]}
-            if [[ "$file" == *".jinja" ]]; then
+            echo -e "DEBUG: Replacing {{ $key }} with: $value"
+            
+            if [[ "$file" == *.jinja ]]; then
                 # For .jinja files, use {!{ }!} format
                 sed -i.bak "s/{!{ ${key} }!}/${value}/g" "$temp_file"
+                echo -e "DEBUG: Used .jinja format"
             else
                 # For non-jinja files, use {{ }} format
                 sed -i.bak "s/{{ ${key} }}/${value}/g" "$temp_file"
+                echo -e "DEBUG: Used standard format"
             fi
         done
 
-        # Additional replacement for Python imports if it's a .py file
+        # Additional processing for Python files
         if [[ "$file" == *.py ]]; then
-            # Replace "from placeholder" with "from package_name"
+            echo -e "DEBUG: Processing Python imports"
             sed -i.bak "s/from placeholder\./from ${REPLACEMENTS[package_name]}\./g" "$temp_file"
-            # Replace "import placeholder" with "import package_name"
             sed -i.bak "s/import placeholder/import ${REPLACEMENTS[package_name]}/g" "$temp_file"
         fi
         
