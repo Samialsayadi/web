@@ -148,11 +148,11 @@ else
     echo -e "\n${YELLOW}Template files kept. You can delete them manually later.${NC}"
 fi
 
-echo -e "To run the application, first create and activate a virtual environment:${NC}"
+echo -e "\n${YELLOW}To run the application, first create and activate a virtual environment:${NC}"
 echo -e "python3 -m venv venv"
 echo -e "source venv/bin/activate  # On Windows use: venv\\Scripts\\activate"
-echo -e "\nThen install the requirements:${NC}"
+echo -e "\n${YELLOW}Then install the requirements:${NC}"
 echo -e "pip install -r requirements.txt"
-echo -e "\nFinally, run the application with:${NC}"
+echo -e "\n${YELLOW}Finally, run the application with:${NC}"
 echo -e "python3 -m uvicorn src/app:app --host 0.0.0.0 --port 8000"
 echo -e "\nHappy coding!${NC}"
