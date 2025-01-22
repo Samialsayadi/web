@@ -6,6 +6,17 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+# Add at the start, after the color definitions:
+AUTO_YES=false
+
+# Add command line flag options
+while getopts "yd" opt; do
+    case $opt in
+        y) AUTO_YES=true ;;
+        d) DRY_RUN=true ;;
+    esac
+done
+
 # Function to read YAML values
 get_yaml_value() {
     local yaml_file="template.yaml"
@@ -62,8 +73,15 @@ if [ -f "example_README.md" ]; then
     echo -e "📄 README.md → README.old.md"
     echo -e "📄 example_README.md → README.md"
     echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
-    read -r readme_response
+    
+    if [ "$AUTO_YES" = false ]; then
+        echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
+        read -r readme_response
+    else
+        readme_response="y"
+        echo -e "\n${YELLOW}Auto-accepting README swap${NC}"
+    fi
+    
     if [[ "$readme_response" =~ ^[Yy]$ ]]; then
         mv README.md README.old.md
         mv example_README.md README.md
@@ -142,9 +160,14 @@ if [ -f "README.md.bak" ]; then
 fi
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Ask about deletion
-echo -e "\n${YELLOW}Would you like to proceed with cleanup? (Y/N)${NC}"
-read -r response
+if [ "$AUTO_YES" = false ]; then
+    echo -e "\n${YELLOW}Would you like to proceed with cleanup? (Y/N)${NC}"
+    read -r response
+else
+    response="y"
+    echo -e "\n${YELLOW}Auto-accepting cleanup${NC}"
+fi
+
 if [[ "$response" =~ ^[Yy]$ ]]; then
     rm -f template.yaml
     echo -e "${GREEN}✓ Deleted${NC} template.yaml"
@@ -178,8 +201,14 @@ else
 fi
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-echo -e "\n${YELLOW}Would you like to set up the development environment now? (Y/N)${NC}"
-read -r setup_response
+if [ "$AUTO_YES" = false ]; then
+    echo -e "\n${YELLOW}Would you like to set up the development environment now? (Y/N)${NC}"
+    read -r setup_response
+else
+    setup_response="y"
+    echo -e "\n${YELLOW}Auto-accepting development environment setup${NC}"
+fi
+
 if [[ "$setup_response" =~ ^[Yy]$ ]]; then
     echo -e "\n${YELLOW}Creating virtual environment...${NC}"
     python3 -m venv venv
