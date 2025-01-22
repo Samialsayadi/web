@@ -124,13 +124,6 @@ docker build -t your-app-name .
 docker run -p 8000:8000 your-app-name
 ```
 
-## 🔧 Customization
-
-1. Update `template.yaml` with your project details
-2. Modify Jinja2 templates in `src/templates/`
-3. Add routes in `src/routers/`
-4. Customize styling using TailwindCSS classes
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
