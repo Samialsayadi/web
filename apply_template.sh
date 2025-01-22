@@ -51,6 +51,8 @@ PATTERNS=(
     "src/templates/*.jinja"
     "src/templates/components/*.jinja"
     "src/placeholder/__init__.py"
+    "src/routers/*.py"
+    "src/**/*.py"
 )
 
 # Read values from template.yaml and escape them
@@ -87,6 +89,14 @@ replace_placeholders() {
                 sed -i.bak "s/{{ ${key} }}/${value}/g" "$temp_file"
             fi
         done
+
+        # Additional replacement for Python imports if it's a .py file
+        if [[ "$file" == *.py ]]; then
+            # Replace "from placeholder" with "from package_name"
+            sed -i.bak "s/from placeholder\./from ${REPLACEMENTS[package_name]}\./g" "$temp_file"
+            # Replace "import placeholder" with "import package_name"
+            sed -i.bak "s/import placeholder/import ${REPLACEMENTS[package_name]}/g" "$temp_file"
+        fi
         
         mv "$temp_file" "$file"
         rm -f "${temp_file}.bak"
