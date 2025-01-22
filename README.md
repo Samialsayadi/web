@@ -13,14 +13,6 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
 
 - **Production-Ready Structure**: Organized project layout following best practices
 - **Modern Stack**: FastAPI, Jinja2, and TailwindCSS integration
-- **Developer Experience**: 
-  - Pre-configured development tools (Black, isort, pylint)
-  - Hot-reload for development
-  - Type hints and comprehensive docstrings
-- **Template System**: 
-  - Easy customization through `template.yaml`
-  - Automatic placeholder replacement
-  - Smart Jinja2 template handling
 - **Security**: 
   - Built-in rate limiting
   - Trusted host middleware
@@ -29,6 +21,10 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
   - Docker support
   - GitHub Actions workflow for PyPI publishing
   - Health check endpoints
+- **Developer Experience**: 
+  - Pre-configured development tools (Black, isort, pylint)
+  - Type hints and comprehensive docstrings
+- **Template System**: Easy customization through `template.yaml`
 
 ## 🚀 Quick Start
 
