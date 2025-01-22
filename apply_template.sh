@@ -171,21 +171,55 @@ echo -e "\n${YELLOW}Would you like to set up the development environment now? (Y
 read -r setup_response
 if [[ "$setup_response" =~ ^[Yy]$ ]]; then
     echo -e "\n${YELLOW}Creating virtual environment...${NC}"
-    $VENV_CREATE_CMD
+    python3 -m venv venv
     
-    # Different activation command based on OS
+    # Set activation script path based on OS
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        ACTIVATE_SCRIPT="venv/Scripts/activate"
         echo -e "${YELLOW}Activating virtual environment (Windows)...${NC}"
-        source $VENV_ACTIVATE_WIN
     else
+        ACTIVATE_SCRIPT="venv/bin/activate"
         echo -e "${YELLOW}Activating virtual environment (Unix)...${NC}"
-        source $VENV_ACTIVATE_UNIX
+    fi
+
+    # Function to check if venv is activated
+    check_venv() {
+        if [ -n "$VIRTUAL_ENV" ]; then
+            return 0
+        else
+            return 1
+        fi
+    }
+
+    # Try to activate venv with timeout
+    MAX_ATTEMPTS=10
+    ATTEMPT=1
+    while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+        if [ -f "$ACTIVATE_SCRIPT" ]; then
+            source "$ACTIVATE_SCRIPT"
+            if check_venv; then
+                echo -e "${GREEN}✓ Virtual environment activated${NC}"
+                break
+            fi
+        fi
+        echo -e "${YELLOW}Waiting for virtual environment to be ready (attempt $ATTEMPT/$MAX_ATTEMPTS)...${NC}"
+        ATTEMPT=$((ATTEMPT + 1))
+        sleep 1
+    done
+
+    if ! check_venv; then
+        echo -e "${RED}✗ Could not activate virtual environment${NC}"
+        echo -e "${YELLOW}Please activate it manually after the script finishes${NC}"
     fi
     
     if [ -f "requirements.txt" ]; then
-        echo -e "\n${YELLOW}Installing requirements...${NC}"
-        pip install -r requirements.txt
-        echo -e "${GREEN}✓ Dependencies installed${NC}"
+        if check_venv; then
+            echo -e "\n${YELLOW}Installing requirements...${NC}"
+            pip install -r requirements.txt
+            echo -e "${GREEN}✓ Dependencies installed${NC}"
+        else
+            echo -e "${RED}✗ Skipping requirements installation (virtual environment not active)${NC}"
+        fi
     fi
     
     echo -e "\n${GREEN}Development environment is ready!${NC}"
