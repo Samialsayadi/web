@@ -41,7 +41,7 @@ PATTERNS=(
     "LICENSE"
     "CONTRIBUTING.md"
     "src/config.py"
-    "src/main.py"
+    "src/app.py"
     "src/static/robots.txt"
     "src/templates/*.jinja"
     "src/templates/components/*.jinja"
