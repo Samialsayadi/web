@@ -49,6 +49,7 @@ jobs:
       run: chmod +x apply_template.sh
 
     - name: Test script with auto-yes
+      shell: bash  # Explicitly use bash
       run: |
         # Create a test directory and copy all necessary files
         mkdir test_dir
@@ -60,12 +61,15 @@ jobs:
         echo "Getting list of templated files..."
         TEMPLATED_FILES=$(yq eval '.templated_files[]' template.yaml)
         
+        # Create a temporary file to store hashes
+        HASH_FILE=$(mktemp)
+        
         # Store original content hashes
-        declare -A ORIGINAL_HASHES
         for file in $TEMPLATED_FILES; do
           if [ -f "$file" ]; then
-            ORIGINAL_HASHES["$file"]=$(md5sum "$file" | cut -d' ' -f1)
-            echo "Original hash for $file: ${ORIGINAL_HASHES[$file]}"
+            HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
+            echo "$file:$HASH" >> "$HASH_FILE"
+            echo "Original hash for $file: $HASH"
           fi
         done
         
@@ -97,8 +101,9 @@ jobs:
         echo "Verifying templated files were modified..."
         for file in $TEMPLATED_FILES; do
           if [ -f "$file" ]; then
-            NEW_HASH=$(md5sum "$file" | cut -d' ' -f1)
-            if [ "${ORIGINAL_HASHES[$file]}" = "$NEW_HASH" ]; then
+            OLD_HASH=$(grep "^$file:" "$HASH_FILE" | cut -d: -f2)
+            NEW_HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
+            if [ "$OLD_HASH" = "$NEW_HASH" ]; then
               echo "Error: $file was not modified by the script"
               exit 1
             else
@@ -106,6 +111,9 @@ jobs:
             fi
           fi
         done
+        
+        # Clean up hash file
+        rm -f "$HASH_FILE"
         
         # Verify package directory was renamed
         PACKAGE_NAME=$(yq eval '.package_name' template.yaml)
