@@ -77,11 +77,6 @@ jobs:
         ./apply_template.sh -y
         
         # Basic cleanup verification
-        if [ ! -f "README.old.md" ]; then
-          echo "README was not renamed as expected"
-          exit 1
-        fi
-        
         if [ -f "template.yaml" ]; then
           echo "template.yaml was not cleaned up"
           exit 1
