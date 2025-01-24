@@ -2,6 +2,7 @@
 
 from typing import Any
 
+
 async def main(
     source: str,
     output: str | None = None,
@@ -23,5 +24,6 @@ async def main(
         The resulting information from your implementation, to be used by the CLI or the API.
     """
 
-    # TODO: Implement your idea
-    return "Keep cultivating your curiosity!" 
+    # TODO: Implement your idea here
+    
+    return "This website was generated with the default values of the template!"
