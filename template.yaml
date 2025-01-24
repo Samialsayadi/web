@@ -1,22 +1,24 @@
 # This file will be used to:
-# - Edit the files that have been templated:
-#   - README.md
-#   - pyproject.toml
-#   - SECURITY.md
-#   - LICENSE
-#   - CONTRIBUTING.md
-#   - src/config.py
-#   - src/main.py
-#   - src/static/robots.txt
-#   - src/templates/base.jinja* Jinja files use the {!{ ... }!} syntax to insert variables
-#   - src/templates/components/footer.jinja
-#   - src/templates/components/navbar.jinja
-#   - src/placeholder/__init__.py
-# - Rename the src/placeholder/ folder to src/package_name/
-# - Rename the placeholder imports in the files to the package_name
+# 1. Edit the files that have been templated:
+templated_files: 
+  - README.md
+  - pyproject.toml
+  - SECURITY.md
+  - LICENSE
+  - CONTRIBUTING.md
+  - src/config.py
+  - src/app.py
+  - src/static/robots.txt
+  - src/templates/base.jinja  # Jinja files use {!{ ... }!} syntax
+  - src/templates/components/footer.jinja
+  - src/templates/components/navbar.jinja
+  - src/templates/api.jinja
+  - src/placeholder/__init__.py
+# 2. Rename the src/placeholder/ folder to src/package_name/
+# 3. Rename the placeholder imports in the .py files to the package_name
 
 # Manual chores needed:
-# - Update the static files (favicons, og-image.png, etc.)
+# 4. Update the static files (favicons, og-image.png, etc.)
 
 # Palette used for the template:
 # https://coolors.co/4a8394-62aec5-88c0d5-add2e4-ffffff-f678a7-ee5c8d-e64072-d91c55

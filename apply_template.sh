@@ -97,22 +97,9 @@ fi
 
 echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
+
 # Define the patterns to search for files
-PATTERNS=(
-    "pyproject.toml"
-    "SECURITY.md"
-    "LICENSE"
-    "CONTRIBUTING.md"
-    "src/config.py"
-    "src/app.py"
-    "src/static/robots.txt"
-    "src/templates/*.jinja"
-    "src/templates/components/*.jinja"
-    "src/placeholder/__init__.py"
-    "src/**/*.py"
-    "src/*.py"
-    "example_README.md"
-)
+PATTERNS=($(get_yaml_value "templated_files"))
 
 # Read all values from template.yaml using yq and escape them
 declare -A REPLACEMENTS
