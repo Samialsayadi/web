@@ -6,7 +6,6 @@ templated_files:
   - SECURITY.md
   - LICENSE
   - CONTRIBUTING.md
-  - src/config.py
   - src/app.py
   - src/static/robots.txt
   - src/templates/base.jinja  # Jinja files use {!{ ... }!} syntax
