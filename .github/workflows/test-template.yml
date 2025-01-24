@@ -1,0 +1,137 @@
+name: Test Template Script
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apply_template.sh'
+      - 'template.yaml'
+      - '.github/workflows/test-template.yml'
+      - 'src/**'  # Track source files
+      - 'requirements.txt'  # Track dependencies
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apply_template.sh'
+      - 'template.yaml'
+      - '.github/workflows/test-template.yml'
+      - 'src/**'
+      - 'requirements.txt'
+
+jobs:
+  test-template:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install yq (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
+
+    - name: Install yq (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install yq
+
+    - name: Make script executable
+      run: chmod +x apply_template.sh
+
+    - name: Test script with auto-yes
+      run: |
+        # Create a test directory and copy all necessary files
+        mkdir test_dir
+        cp -r src test_dir/
+        cp apply_template.sh template.yaml requirements.txt test_dir/
+        cd test_dir
+        
+        # Store original templated files for comparison
+        echo "Getting list of templated files..."
+        TEMPLATED_FILES=$(yq eval '.templated_files[]' template.yaml)
+        
+        # Store original content hashes
+        declare -A ORIGINAL_HASHES
+        for file in $TEMPLATED_FILES; do
+          if [ -f "$file" ]; then
+            ORIGINAL_HASHES["$file"]=$(md5sum "$file" | cut -d' ' -f1)
+            echo "Original hash for $file: ${ORIGINAL_HASHES[$file]}"
+          fi
+        done
+        
+        # Run script with -y flag for auto-yes
+        ./apply_template.sh -y
+        
+        # Basic cleanup verification
+        if [ ! -f "README.old.md" ]; then
+          echo "README was not renamed as expected"
+          exit 1
+        fi
+        
+        if [ -f "template.yaml" ]; then
+          echo "template.yaml was not cleaned up"
+          exit 1
+        fi
+        
+        if [ -f "apply_template.sh" ]; then
+          echo "apply_template.sh was not cleaned up"
+          exit 1
+        fi
+        
+        if [ ! -d "venv" ]; then
+          echo "Virtual environment was not created"
+          exit 1
+        fi
+        
+        # Verify templated files were modified
+        echo "Verifying templated files were modified..."
+        for file in $TEMPLATED_FILES; do
+          if [ -f "$file" ]; then
+            NEW_HASH=$(md5sum "$file" | cut -d' ' -f1)
+            if [ "${ORIGINAL_HASHES[$file]}" = "$NEW_HASH" ]; then
+              echo "Error: $file was not modified by the script"
+              exit 1
+            else
+              echo "$file was successfully modified"
+            fi
+          fi
+        done
+        
+        # Verify package directory was renamed
+        PACKAGE_NAME=$(yq eval '.package_name' template.yaml)
+        if [ ! -d "src/$PACKAGE_NAME" ]; then
+          echo "Package directory was not renamed to $PACKAGE_NAME"
+          exit 1
+        fi
+        
+        # Test API
+        echo "Testing API..."
+        source venv/bin/activate
+        pip install -r requirements.txt
+        cd src
+        python -m uvicorn app:app --host 0.0.0.0 --port 8000 &
+        UVICORN_PID=$!
+        
+        # Wait for server to start
+        sleep 5
+        
+        # Test health endpoint
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/health || echo "failed")
+        kill $UVICORN_PID
+        
+        if [ "$RESPONSE" != "200" ]; then
+          echo "API health check failed with response: $RESPONSE"
+          exit 1
+        else
+          echo "API health check successful"
+        fi 
