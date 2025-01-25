@@ -99,27 +99,22 @@ echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
 
 # Define the patterns to search for files
-mapfile -t PATTERNS < <(yq eval '.templated_files[]' template.yaml)
+PATTERNS=()
+while IFS= read -r line; do
+    PATTERNS+=("$line")
+done < <(yq '.templated_files[]' template.yaml)
 
 # Read all values from template.yaml using yq and escape them
-declare -A REPLACEMENTS
+declare -a REPLACEMENTS_KEYS=()
+declare -a REPLACEMENTS_VALUES=()
 
-# First, get all the keys
-mapfile -t keys < <(yq eval 'keys | .[]' template.yaml)
-
-for key in "${keys[@]}"; do
-    # Skip comments and empty lines
-    if [[ "$key" =~ ^#.*$ ]] || [ -z "$key" ]; then
-        continue
+# Get all the keys and values
+while IFS=': ' read -r key value; do
+    if [[ ! "$key" =~ ^#.*$ ]] && [ ! -z "$key" ]; then
+        REPLACEMENTS_KEYS+=("$key")
+        REPLACEMENTS_VALUES+=("$(printf '%s' "$value" | escape_perl)")
     fi
-
-    # Get the value for this key and remove any trailing newlines
-    value=$(yq eval ".$key" template.yaml | tr -d '\n')
-
-    if [ ! -z "$value" ]; then
-        REPLACEMENTS["$key"]="$(printf '%s' "$value" | escape_perl)"
-    fi
-done
+done < <(yq 'del(.templated_files)' template.yaml)
 
 # Function to replace placeholders in a file
 replace_placeholders() {
@@ -128,22 +123,32 @@ replace_placeholders() {
         local temp_file="${file}.tmp"
         cp "$file" "$temp_file"
 
-        for key in "${!REPLACEMENTS[@]}"; do
-            local value=${REPLACEMENTS[$key]}
+        for i in "${!REPLACEMENTS_KEYS[@]}"; do
+            local key="${REPLACEMENTS_KEYS[$i]}"
+            local value="${REPLACEMENTS_VALUES[$i]}"
 
             if [[ "$file" == *.jinja ]]; then
-                # For .jinja files, use {!{ }!} format with # as delimiter
-                perl -pi -e "s#{!{ ${key} }!}#${value}#g" "$temp_file"
+                # For .jinja files, use {!{ }!} format
+                perl -pi -e "s/{!{ ${key} }!}/${value}/g" "$temp_file"
             else
-                # For non-jinja files, use {{ }} format with # as delimiter
-                perl -pi -e "s#{{ ${key} }}#${value}#g" "$temp_file"
+                # For non-jinja files, use {{ }} format
+                perl -pi -e "s/{{ ${key} }}/${value}/g" "$temp_file"
             fi
         done
 
         # Additional processing for Python files
         if [[ "$file" == *.py ]]; then
-            perl -pi -e "s#from placeholder\.#from ${REPLACEMENTS[package_name]}.#g" "$temp_file"
-            perl -pi -e "s#import placeholder#import ${REPLACEMENTS[package_name]}#g" "$temp_file"
+            package_name=""
+            for i in "${!REPLACEMENTS_KEYS[@]}"; do
+                if [ "${REPLACEMENTS_KEYS[$i]}" = "package_name" ]; then
+                    package_name="${REPLACEMENTS_VALUES[$i]}"
+                    break
+                fi
+            done
+            if [ ! -z "$package_name" ]; then
+                perl -pi -e "s/from placeholder\./from ${package_name}./g" "$temp_file"
+                perl -pi -e "s/import placeholder/import ${package_name}/g" "$temp_file"
+            fi
         fi
 
         mv "$temp_file" "$file"
@@ -171,8 +176,8 @@ done
 
 # Rename placeholder directory
 if [ -d "src/placeholder" ]; then
-    mv "src/placeholder" "src/${REPLACEMENTS[package_name]}"
-    echo -e "${GREEN}✓ Renamed${NC} src/placeholder to src/${REPLACEMENTS[package_name]}"
+    mv "src/placeholder" "src/${REPLACEMENTS_VALUES[package_name]}"
+    echo -e "${GREEN}✓ Renamed${NC} src/placeholder to src/${REPLACEMENTS_VALUES[package_name]}"
 fi
 
 # Prompt for README swap with preview
