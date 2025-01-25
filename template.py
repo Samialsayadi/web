@@ -202,8 +202,12 @@ class ProjectSetup:
 
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
-            console.print("[yellow]Installing pre-commit hooks...[/yellow]")
-            subprocess.run(["pre-commit", "install"], check=True)
+            if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
+                console.print("[yellow]Installing pre-commit hooks...[/yellow]")
+                subprocess.run(["pre-commit", "install"], check=True)
+                console.print("[green]Pre-commit hooks installed successfully.[/green]")
+            else:
+                console.print("[yellow]Skipping pre-commit hooks installation.[/yellow]")
 
 
 def main():
