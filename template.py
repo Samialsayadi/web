@@ -24,7 +24,7 @@ class TemplateConfig:
     """Template configuration with default values."""
 
     ############### Start of manual user config ###############
-    
+
     # Repository
     author: str = field(default="Your Name")
     author_email: str = field(default="your.email@example.com")
@@ -69,9 +69,10 @@ class TemplateConfig:
     )
 
     ############### End of manual user config ###############
-    
+
     # Template README content
-    readme_template: str = field(default="""# {{ project_name }}
+    readme_template: str = field(
+        default="""# {{ project_name }}
 
 [![Image](./docs/frontpage.png "{{ project_name }} main page")]({{ project_url }})
 
@@ -156,7 +157,8 @@ If you are hosting it on a domain, you can specify the allowed hostnames via env
 ## Project Growth
 
 [![Star History Chart](https://api.star-history.com/svg?repos={{ github_username }}/{{ github_repository }}&type=Date)](https://star-history.com/#{{ github_username }}/{{ github_repository }}&Date)
-""")
+"""
+    )
 
     # Files to be processed
     templated_files: list[str] = field(

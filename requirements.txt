@@ -3,7 +3,7 @@ fastapi-analytics
 fastapi[standard]
 gitingest
 python-dotenv
+rich>=13.7.0
 slowapi
 starlette
 uvicorn
-rich>=13.7.0
