@@ -1,5 +1,5 @@
 """
-Integration tests for GitIngest.
+Integration tests for the package.
 These tests cover core functionalities, edge cases, and concurrency handling.
 """
 
@@ -42,7 +42,7 @@ def mock_templates():
 
 
 def cleanup_temp_directories():
-    temp_dir = Path("/tmp/gitingest")
+    temp_dir = Path("/tmp/tests")
     if temp_dir.exists():
         try:
             shutil.rmtree(temp_dir)

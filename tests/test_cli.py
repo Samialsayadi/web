@@ -1,4 +1,4 @@
-""" Tests for the gitingest cli """
+""" Tests for the CLI functionality of the package """
 
 import os
 
