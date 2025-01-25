@@ -55,25 +55,30 @@ jobs:
         mkdir test_dir
         cp -r src test_dir/
         cp apply_template.sh template.yaml requirements.txt test_dir/
+        
+        # Copy all template files from the list
+        while IFS= read -r file; do
+            # Create directory if needed
+            mkdir -p "test_dir/$(dirname "$file")" 2>/dev/null || true
+            # Copy file if it exists
+            cp "$file" "test_dir/$file" 2>/dev/null || true
+        done < <(yq eval '.templated_files[]' template.yaml)
+
         cd test_dir
 
         # Store original templated files for comparison
         echo "Getting list of templated files..."
-        TEMPLATED_FILES=$(yq eval '.templated_files[]' template.yaml)
+        HASH_FILE=$(mktemp)
+        while IFS= read -r file; do
+            if [ -f "$file" ]; then
+                HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
+                echo "$file:$HASH" >> "$HASH_FILE"
+                echo "Original hash for $file: $HASH"
+            fi
+        done < <(yq eval '.templated_files[]' template.yaml)
+
         # Store package name before template.yaml is deleted
         PACKAGE_NAME=$(yq eval '.package_name' template.yaml)
-
-        # Create a temporary file to store hashes
-        HASH_FILE=$(mktemp)
-
-        # Store original content hashes
-        for file in $TEMPLATED_FILES; do
-          if [ -f "$file" ]; then
-            HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
-            echo "$file:$HASH" >> "$HASH_FILE"
-            echo "Original hash for $file: $HASH"
-          fi
-        done
 
         # Run script with -y flag for auto-yes
         ./apply_template.sh -y
@@ -96,18 +101,18 @@ jobs:
 
         # Verify templated files were modified
         echo "Verifying templated files were modified..."
-        for file in $TEMPLATED_FILES; do
-          if [ -f "$file" ]; then
-            OLD_HASH=$(grep "^$file:" "$HASH_FILE" | cut -d: -f2)
-            NEW_HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
-            if [ "$OLD_HASH" = "$NEW_HASH" ]; then
-              echo "Error: $file was not modified by the script"
-              exit 1
-            else
-              echo "$file was successfully modified"
+        while IFS= read -r file; do
+            if [ -f "$file" ]; then
+                OLD_HASH=$(grep "^$file:" "$HASH_FILE" | cut -d: -f2)
+                NEW_HASH=$(md5sum "$file" 2>/dev/null || md5 -q "$file")
+                if [ "$OLD_HASH" = "$NEW_HASH" ]; then
+                    echo "Error: $file was not modified by the script"
+                    exit 1
+                else
+                    echo "$file was successfully modified"
+                fi
             fi
-          fi
-        done
+        done < <(yq eval '.templated_files[]' template.yaml)
 
         # Clean up hash file
         rm -f "$HASH_FILE"
