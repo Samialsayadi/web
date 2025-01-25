@@ -23,6 +23,15 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    # Add pre-commit cache
+    - name: Cache pre-commit
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pre-commit
+        key: ${{ runner.os }}-pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pre-commit-
+
     - name: Cache pip
       uses: actions/cache@v4
       with:
