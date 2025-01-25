@@ -6,15 +6,18 @@ import asyncio
 
 import click
 
+from placeholder.config import OUTPUT_FILE_PATH
 from placeholder.main import main
 
 
 @click.command()
 @click.argument("source", type=str, default=".")
 @click.option("--output", "-o", default=None, help="Output file path (default: <repo_name>.txt in current directory)")
+@click.option("--branch", "-b", default=None, help="Branch to clone and ingest")
 def cli(
     source: str,
     output: str | None,
+    branch: str | None
 ):
     """
     Main entry point for the CLI. This function is called when the CLI is run as a script.
@@ -28,14 +31,16 @@ def cli(
     output : str | None
         The path where the output file will be written. If not specified, the output will be written
         to a file named `<repo_name>.txt` in the current directory.
+    branch : str | None
+        The branch to clone (optional).
     """
     # Main entry point for the CLI. This function is called when the CLI is run as a script.
-    asyncio.run(_async_cli(source, output))
-
+    asyncio.run(_async_cli(source, output, branch))
 
 async def _async_cli(
     source: str,
     output: str | None,
+    branch: str | None,
 ) -> None:
     """
     Analyze a directory or repository and create a text dump of its contents.
@@ -50,6 +55,8 @@ async def _async_cli(
     output : str | None
         The path where the output file will be written. If not specified, the output will be written
         to a file named `<repo_name>.txt` in the current directory.
+    branch : str | None
+        The branch to clone (optional).
 
     Raises
     ------
@@ -59,8 +66,8 @@ async def _async_cli(
     try:
 
         if not output:
-            output = "digest.txt"
-        result = main(source, output)
+            output = OUTPUT_FILE_PATH
+            result = main(source, output=output)
 
         click.echo(f"Analysis complete! Output written to: {output}")
         click.echo("\nSummary:")

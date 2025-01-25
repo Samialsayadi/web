@@ -48,18 +48,11 @@ Thanks for your interest in contributing to {{ project_name }}! 🚀 {{ project_
    pytest
    ```
 
-8. Run the app locally using Docker to test your changes (optional):
-
-   1. Build the Docker image
-
-        ``` bash
-        docker build -t {{ package_name }} .
-        ```
-
-   2. Run the Docker container:
+8. Navigate to src folder and run the local web server:
 
       ``` bash
-      docker run -d --name {{ package_name }} -p 8000:8000 {{ package_name }}
+      cd src
+      uvicorn server.main:app
       ```
 
    3. Open your browser and navigate to `http://localhost:8000` to see the app running.

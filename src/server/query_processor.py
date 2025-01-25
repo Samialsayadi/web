@@ -6,9 +6,10 @@ from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
 
-from config import EXAMPLE_REPOS
 from placeholder.main import main
-from server_utils import Colors
+
+from .server_config import EXAMPLE_REPOS
+from .server_utils import Colors
 
 templates = Jinja2Templates(directory="templates")
 
@@ -49,6 +50,7 @@ async def process_query(
         result = await main(input_text)
     except Exception as e:
         context["error_message"] = f"Error: {e}"
+        _print_error(url=input_text, e=e)
         return template_response(context=context)
 
     _print_success(

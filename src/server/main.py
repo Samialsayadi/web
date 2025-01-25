@@ -1,83 +1,35 @@
 """ Main module for the FastAPI application. """
 
 import os
-from contextlib import asynccontextmanager
+from pathlib import Path
 
 from api_analytics.fastapi import Analytics
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from routers import dynamic, index
-from server_utils import limiter
+from server.routers import download, dynamic, index
+from server.server_config import templates
+from server.server_utils import lifespan, limiter, rate_limit_exception_handler
 
 # Load environment variables from .env file
 load_dotenv()
-
-
-@asynccontextmanager
-async def lifespan(_: FastAPI):
-    """
-    Lifecycle manager for the FastAPI application.
-    Handles startup and shutdown events.
-
-    Parameters
-    ----------
-    _ : FastAPI
-        The FastAPI application instance (unused).
-
-    Yields
-    -------
-    None
-        Yields control back to the FastAPI application while the background task runs.
-    """
-
-    yield
-
 
 # Initialize the FastAPI application with lifespan
 app = FastAPI(lifespan=lifespan)
 app.state.limiter = limiter
 
-
-async def rate_limit_exception_handler(request: Request, exc: Exception) -> Response:
-    """
-    Custom exception handler for rate-limiting errors.
-
-    Parameters
-    ----------
-    request : Request
-        The incoming HTTP request.
-    exc : Exception
-        The exception raised, expected to be RateLimitExceeded.
-
-    Returns
-    -------
-    Response
-        A response indicating that the rate limit has been exceeded.
-
-    Raises
-    ------
-    exc
-        If the exception is not a RateLimitExceeded error, it is re-raised.
-    """
-    if isinstance(exc, RateLimitExceeded):
-        # Delegate to the default rate limit handler
-        return _rate_limit_exceeded_handler(request, exc)
-    # Re-raise other exceptions
-    raise exc
-
-
 # Register the custom exception handler for rate limits
 app.add_exception_handler(RateLimitExceeded, rate_limit_exception_handler)
 
-# Mount static files to serve CSS, JS, and other static assets
-app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Mount static files dynamically to serve CSS, JS, and other static assets
+static_dir = Path(__file__).parent.parent / "static"
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 
 # Set up API analytics middleware if an API key is provided
 if app_analytics_key := os.getenv("API_ANALYTICS_KEY"):
@@ -94,9 +46,6 @@ else:
 
 # Add middleware to enforce allowed hosts
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
-
-# Set up template rendering
-templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/health")
