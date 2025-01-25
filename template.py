@@ -75,8 +75,9 @@ class TemplateConfig:
             "LICENSE",
             "CONTRIBUTING.md",
             "src/static/robots.txt",
-            "src/placeholder/query_processor.py",
             "src/placeholder/__init__.py",
+            "src/server/query_processor.py",
+            # Note: In .jinja files, we use the {!{ ... }!} syntax instead of {{ ... }}.
             "src/server/templates/base.jinja",
             "src/server/templates/components/footer.jinja",
             "src/server/templates/components/navbar.jinja",
