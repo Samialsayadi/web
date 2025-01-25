@@ -112,10 +112,10 @@ for key in "${keys[@]}"; do
     if [[ "$key" =~ ^#.*$ ]] || [ -z "$key" ]; then
         continue
     fi
-    
+
     # Get the value for this key and remove any trailing newlines
     value=$(yq eval ".$key" template.yaml | tr -d '\n')
-    
+
     if [ ! -z "$value" ]; then
         REPLACEMENTS["$key"]="$(printf '%s' "$value" | escape_perl)"
     fi
@@ -127,10 +127,10 @@ replace_placeholders() {
     if [ -f "$file" ]; then
         local temp_file="${file}.tmp"
         cp "$file" "$temp_file"
-        
+
         for key in "${!REPLACEMENTS[@]}"; do
             local value=${REPLACEMENTS[$key]}
-            
+
             if [[ "$file" == *.jinja ]]; then
                 # For .jinja files, use {!{ }!} format with # as delimiter
                 perl -pi -e "s#{!{ ${key} }!}#${value}#g" "$temp_file"
@@ -145,7 +145,7 @@ replace_placeholders() {
             perl -pi -e "s#from placeholder\.#from ${REPLACEMENTS[package_name]}.#g" "$temp_file"
             perl -pi -e "s#import placeholder#import ${REPLACEMENTS[package_name]}#g" "$temp_file"
         fi
-        
+
         mv "$temp_file" "$file"
         rm -f "${temp_file}.bak"
         echo -e "${GREEN}✓ Updated${NC} $file"
@@ -182,7 +182,7 @@ if [ -f "example_README.md" ]; then
     echo -e "📄 README.md → README.old.md"
     echo -e "📄 example_README.md → README.md"
     echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    
+
     if [ "$AUTO_YES" = false ]; then
         echo -e "\n${YELLOW}Would you like to use the template's README instead of the project's README? (Y/N)${NC}"
         read -r readme_response
@@ -190,7 +190,7 @@ if [ -f "example_README.md" ]; then
         readme_response="y"
         echo -e "\n${YELLOW}Auto-accepting README swap${NC}"
     fi
-    
+
     if [[ "$readme_response" =~ ^[Yy]$ ]]; then
         mv README.md README.old.md
         mv example_README.md README.md
@@ -198,6 +198,15 @@ if [ -f "example_README.md" ]; then
     else
         echo -e "${YELLOW}Keeping original README.md${NC}"
     fi
+fi
+
+# Remove markdownlint disables after template application
+if [ -f ".pre-commit-config.yaml" ]; then
+    echo -e "\n${YELLOW}Restoring markdownlint configuration...${NC}"
+    # Use sed to replace the disabled rules with just line-length
+    sed -i.bak 's/--disable=line-length, --disable=MD034, --disable=MD029, --disable=MD040/--disable=line-length/' .pre-commit-config.yaml
+    rm -f .pre-commit-config.yaml.bak
+    echo -e "${GREEN}✓ Restored${NC} markdownlint configuration"
 fi
 
 echo -e "\n${GREEN}Template application completed!${NC}"
@@ -266,7 +275,7 @@ fi
 if [[ "$setup_response" =~ ^[Yy]$ ]]; then
     echo -e "\n${YELLOW}Creating virtual environment...${NC}"
     python3 -m venv venv
-    
+
     # Set activation script path based on OS
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         ACTIVATE_SCRIPT="venv/Scripts/activate"
@@ -305,7 +314,7 @@ if [[ "$setup_response" =~ ^[Yy]$ ]]; then
         echo -e "${RED}✗ Could not activate virtual environment${NC}"
         echo -e "${YELLOW}Please activate it manually after the script finishes${NC}"
     fi
-    
+
     if [ -f "requirements.txt" ]; then
         if check_venv; then
             echo -e "\n${YELLOW}Installing requirements...${NC}"
@@ -315,7 +324,7 @@ if [[ "$setup_response" =~ ^[Yy]$ ]]; then
             echo -e "${RED}✗ Skipping requirements installation (virtual environment not active)${NC}"
         fi
     fi
-    
+
     echo -e "\n${GREEN}Development environment is ready!${NC}"
     echo -e "\n${YELLOW}To activate the environment:${NC}"
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then

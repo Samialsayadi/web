@@ -19,6 +19,7 @@ from server_utils import limiter
 # Load environment variables from .env file
 load_dotenv()
 
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     """
@@ -42,6 +43,7 @@ async def lifespan(_: FastAPI):
 # Initialize the FastAPI application with lifespan
 app = FastAPI(lifespan=lifespan)
 app.state.limiter = limiter
+
 
 async def rate_limit_exception_handler(request: Request, exc: Exception) -> Response:
     """
@@ -69,6 +71,7 @@ async def rate_limit_exception_handler(request: Request, exc: Exception) -> Resp
         return _rate_limit_exceeded_handler(request, exc)
     # Re-raise other exceptions
     raise exc
+
 
 # Register the custom exception handler for rate limits
 app.add_exception_handler(RateLimitExceeded, rate_limit_exception_handler)

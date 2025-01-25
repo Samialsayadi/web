@@ -77,7 +77,7 @@ repos:
     hooks:
       - id: markdownlint
         description: "Lint markdown files."
-        args: ["--disable=line-length"]
+        args: [--disable=line-length, --disable=MD034, --disable=MD029, --disable=MD040]
 
   - repo: https://github.com/terrencepreilly/darglint
     rev: v1.8.1

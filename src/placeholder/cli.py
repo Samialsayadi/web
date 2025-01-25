@@ -8,6 +8,7 @@ import click
 
 from placeholder.main import main
 
+
 @click.command()
 @click.argument("source", type=str, default=".")
 @click.option("--output", "-o", default=None, help="Output file path (default: <repo_name>.txt in current directory)")

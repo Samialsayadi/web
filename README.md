@@ -13,7 +13,7 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
 
 - **Production-Ready Structure**: Organized project layout following best practices
 - **Modern Stack**: FastAPI, Jinja2, and TailwindCSS integration
-- **Security**: 
+- **Security**:
   - Built-in rate limiting
   - Trusted host middleware
   - Security headers configuration
@@ -21,7 +21,7 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
   - Docker support
   - GitHub Actions workflow for PyPI publishing
   - Health check endpoints
-- **Developer Experience**: 
+- **Developer Experience**:
   - Pre-configured development tools (Black, isort, pylint)
   - Type hints and comprehensive docstrings
 - **Template System**: Easy customization through `template.yaml`
@@ -47,8 +47,7 @@ project_name: "Your Project"
 3. Apply the template:
 
 ```bash
-chmod +x apply_template.sh
-./apply_template.sh
+./build.sh
 ```
 
 4. Install dependencies:

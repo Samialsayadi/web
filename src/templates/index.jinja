@@ -9,8 +9,8 @@
     </script>
 {% endblock %}
 {% block content %}
-{% set first_star_color = "#ADD2E4" %}
-{% set secondary_star_color = "#F5A3BE" %}
+    {% set first_star_color = "#ADD2E4" %}
+    {% set secondary_star_color = "#F5A3BE" %}
     <div class="mb-8">
         <div class="relative w-full mx-auto flex sm:flex-row flex-col justify-center items-start sm:items-center">
             <svg class="h-auto w-16 sm:w-20 md:w-24 flex-shrink-0 p-2 md:relative sm:absolute lg:absolute left-0 lg:-translate-x-full lg:ml-32 md:translate-x-10 sm:-translate-y-16 md:-translate-y-0 -translate-x-2 lg:-translate-y-10"
@@ -38,11 +38,10 @@
             </svg>
         </div>
         <p class="text-gray-600 text-lg max-w-2xl mx-auto text-center mt-8">
-            Skip the boring part: <a href="https://github.com/atyrode/gitemplate" class="text-blue-600 hover:underline">use this template</a> for your next project!
+            Skip the boring part: <a href="https://github.com/atyrode/gitemplate"
+    class="text-blue-600 hover:underline">use this template</a> for your next project!
         </p>
-        <p class="text-gray-600 text-lg max-w-2xl mx-auto text-center mt-0">
-            Powered by FastAPI, TailwindCSS and Jinja2.
-        </p>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto text-center mt-0">Powered by FastAPI, TailwindCSS and Jinja2.</p>
     </div>
     {% if error_message %}
         <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700"

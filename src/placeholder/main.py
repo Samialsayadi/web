@@ -24,6 +24,7 @@ async def main(
         The resulting information from your implementation, to be used by the CLI or the API.
     """
 
-    # TODO: Implement your idea here
-    
+    print(f"Source: {source}")
+    print(f"Output: {output}")
+
     return "This website was generated with the default values of the template!"

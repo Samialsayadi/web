@@ -5,6 +5,7 @@ import pytest
 # Note: for pytest to work, you have to prefix your functions with "test_"
 # and the same goes for the .py test files!
 
+
 def test_sync_example():
     """Example of a synchronous test."""
     assert True, "This test should always pass"
@@ -19,4 +20,4 @@ async def test_async_example():
 
 async def async_operation():
     """Example async operation that always succeeds."""
-    return "success" 
+    return "success"

@@ -34,11 +34,6 @@ async def process_query(
     -------
     _TemplateResponse
         Rendered template response containing the processed results or an error message.
-
-    Raises
-    ------
-    ValueError
-        If an invalid pattern type is provided.
     """
 
     template = "index.jinja" if is_index else "git.jinja"
@@ -59,7 +54,7 @@ async def process_query(
     _print_success(
         url=input_text,
     )
-    
+
     context.update(
         {
             "result": result,
@@ -80,7 +75,7 @@ def _print_error(url: str, e: Exception) -> None:
     e : Exception
         The exception raised during the query or process.
     """
-    ...
+    print(f"{Colors.RED}URL: {url}\nError: {e}{Colors.END}")
 
 
 def _print_success(url: str) -> None:
@@ -92,4 +87,4 @@ def _print_success(url: str) -> None:
     url : str
         The URL associated with the successful query.
     """
-    ...
+    print(f"{Colors.GREEN}Success: {url}{Colors.END}")
