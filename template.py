@@ -158,7 +158,6 @@ class TemplateProcessor:
         replacements = [
             (r"from placeholder\.", f"from {self.config.package_name}."),
             (r"import placeholder", f"import {self.config.package_name}"),
-            (r"from server\.", f"from {self.config.package_name}.server."),
         ]
 
         for pattern, replacement in replacements:
