@@ -43,7 +43,7 @@ source .venv/bin/activate  # On Windows: `.venv\Scripts\activate`
 author: "Your Name"
 package_name: "your_package"
 project_name: "Your Project"
-# ... (see template.py for all options)
+...
 ```
 
 4. Apply the template:
