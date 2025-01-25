@@ -13,6 +13,7 @@ templated_files:
   - src/templates/components/navbar.jinja
   - src/templates/api.jinja
   - src/placeholder/__init__.py
+  - src/placeholder/query_processor.py
 # 2. Rename the src/placeholder/ folder to src/package_name/
 # 3. Rename the placeholder imports in the .py files to the package_name
 
