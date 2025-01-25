@@ -9,22 +9,18 @@ A modern, production-ready template for FastAPI projects with Jinja2 templating 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## ✨ Features
+## ⚡ TL;DR
 
-- **Production-Ready Structure**: Organized project layout following best practices
-- **Modern Stack**: FastAPI, Jinja2, and TailwindCSS integration
-- **Security**:
-  - Built-in rate limiting
-  - Trusted host middleware
-  - Security headers configuration
-- **Deployment Ready**:
-  - Docker support
-  - GitHub Actions workflow for PyPI publishing
-  - Health check endpoints
-- **Developer Experience**:
-  - Pre-configured development tools (Black, isort, pylint)
-  - Type hints and comprehensive docstrings
-- **Template System**: Easy customization through `template.yaml`
+You may copy and paste the following code block to get started:
+
+```bash
+git clone https://github.com/atyrode/gitemplate.git && cd gitemplate
+python -m venv .venv && source .venv/bin/activate  # Windows: `.venv\Scripts\activate`
+pip install -r requirements-dev.txt
+# Edit template.py with your project details
+python template.py -i
+cd src && python -m uvicorn app:app --reload
+```
 
 ## 🚀 Quick Start
 
@@ -35,28 +31,26 @@ git clone https://github.com/atyrode/gitemplate.git
 cd gitemplate
 ```
 
-2. Set up your project details in `template.yaml`:
-
-```yaml
-author: "Your Name"
-package_name: "your_package"
-project_name: "Your Project"
-# ... (see template.yaml for all options)
-```
-
-3. Apply the template:
-
-```bash
-./build.sh
-```
-
-4. Install dependencies:
+2. Create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: `.venv\Scripts\activate`
-pip install -r requirements-dev.txt
-pre-commit install
+```
+
+3. Set up your project details in `template.py`:
+
+```python
+author: "Your Name"
+package_name: "your_package"
+project_name: "Your Project"
+# ... (see template.py for all options)
+```
+
+4. Apply the template:
+
+```bash
+python template.py
 ```
 
 5. Run the development server:
@@ -68,24 +62,42 @@ python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
 Visit `http://localhost:8000` to see your application running!
 
-## 📁 Project Structure
+## ✨ Features
 
-```
-├── src/
-│   ├── placeholder/        # Core logic
-│   ├── static/             # Static files (CSS, JS, images)
-│   ├── templates/          # Jinja2 templates
-│   ├── routers/            # FastAPI route modules
-│   ├── config.py           # Configuration settings
-│   ├── server_utils.py     # FastAPI utilities
-│   ├── query_processor.py  # FastAPI to core logic connector
-│   └── app.py              # FastAPI application entry point
-├── tests/                  # Test files
-├── Dockerfile              # Docker configuration
-├── pyproject.toml          # Pypi package configuration
-├── requirements.txt        # Production dependencies
-└── requirements-dev.txt    # Development dependencies
-```
+- **Production-Ready Structure**: Organized project layout following best practices
+- **Modern Stack**:
+  - FastAPI for high-performance APIs
+  - Jinja2 templating engine
+  - TailwindCSS for modern styling
+  - SQLAlchemy support (optional)
+- **Security**:
+  - Built-in rate limiting
+  - Trusted host middleware
+  - Security headers configuration
+  - CORS configuration
+  - Environment variables management
+- **Deployment Ready**:
+  - Docker support with multi-stage builds
+  - GitHub Actions workflows for:
+    - CI/CD pipeline
+    - PyPI publishing
+    - Docker image building
+  - Health check endpoints
+  - Production-grade logging
+- **Developer Experience**:
+  - Pre-configured development tools:
+    - Black for code formatting
+    - isort for import sorting
+    - pylint for code analysis
+    - mypy for type checking
+    - pytest for testing
+  - Pre-commit hooks for code quality
+  - Type hints and comprehensive docstrings
+  - Hot reload during development
+- **Template System**:
+  - Easy customization through `template.py`
+  - Flexible project structure
+  - Configurable dependencies
 
 ## 💻 Development
 
