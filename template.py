@@ -267,31 +267,18 @@ class ProjectSetup:
         """Set up the development environment."""
         console.rule("[bold blue]Setting up development environment")
 
-        # Install uv if not already installed
-        try:
-            subprocess.run(["uv", "--version"], check=True, capture_output=True)
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            console.print("[yellow]Installing uv package manager...[/yellow]")
-            subprocess.run([sys.executable, "-m", "pip", "install", "uv"], check=True)
-
-        # Create virtual environment using uv
+        # Create virtual environment using venv
         venv_path = Path("venv")
         if not venv_path.exists():
             console.print("[yellow]Creating virtual environment...[/yellow]")
-            subprocess.run(["uv", "venv", "venv"], check=True)
+            subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
 
-        # Determine activation script
-        if sys.platform == "win32":
-            activate_script = venv_path / "Scripts" / "activate"
-        else:
-            activate_script = venv_path / "bin" / "activate"
-
-        # Install dependencies using uv
+        # Install dependencies using pip
         console.print("[yellow]Installing dependencies...[/yellow]")
         if Path("requirements-dev.txt").exists():
-            subprocess.run(["uv", "pip", "install", "-r", "requirements-dev.txt"], check=True)
+            subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"], check=True)
         elif Path("requirements.txt").exists():
-            subprocess.run(["uv", "pip", "install", "-r", "requirements.txt"], check=True)
+            subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
 
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
