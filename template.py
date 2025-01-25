@@ -18,10 +18,11 @@ from rich.prompt import Confirm, Prompt
 
 console = Console()
 
+
 @dataclass
 class TemplateConfig:
     """Template configuration with default values."""
-    
+
     # Repository
     author: str = field(default="Your Name")
     author_email: str = field(default="your.email@example.com")
@@ -35,7 +36,9 @@ class TemplateConfig:
     package_name: str = field(default="your_package_name")
     package_version: str = field(default="0.1.0")
     package_description: str = field(default="A brief description of your package")
-    package_keywords: str = field(default="AI tools, LLM integration, Context, Prompt, Git workflow, Git repository, Git automation, prompt-friendly")
+    package_keywords: str = field(
+        default="AI tools, LLM integration, Context, Prompt, Git workflow, Git repository, Git automation, prompt-friendly"
+    )
 
     # Project
     project_name: str = field(default="Projectname")
@@ -46,39 +49,45 @@ class TemplateConfig:
     edge_extension_url: str = field(default="https://microsoftedge.microsoft.com/addons/detail/example")
     discord_invite: str = field(default="https://discord.com/invite/example")
     project_description: str = field(default="A description of your project, will appear at the top of the README.md")
-    project_badges: str = field(default="""
+    project_badges: str = field(
+        default="""
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PyPI version](https://badge.fury.io/py/example.svg)](https://badge.fury.io/py/example)
 [![GitHub stars](https://img.shields.io/github/stars/example?style=social)](https://github.com/example)
 [![Downloads](https://pepy.tech/badge/example)](https://pepy.tech/project/example)
-""".strip())
+""".strip()
+    )
     project_features: str = field(default="Describe the features of the project")
     project_stack: str = field(default="Stack used for the project")
     project_command_line_usage: str = field(default="Describes the steps to use the command line tool")
     project_python_package_usage: str = field(default="Describes the steps to use the Python package")
     project_self_host_steps: str = field(default="Describes the steps to self-host the project")
-    project_extension_informations: str = field(default="This flavor text will appear in the README.md file under the extension badges")
+    project_extension_informations: str = field(
+        default="This flavor text will appear in the README.md file under the extension badges"
+    )
 
     # Files to be processed
-    templated_files: List[str] = field(default_factory=lambda: [
-        "README.md",
-        "pyproject.toml",
-        "SECURITY.md",
-        "LICENSE",
-        "CONTRIBUTING.md",
-        "src/query_processor.py",
-        "src/static/robots.txt",
-        "src/templates/base.jinja",
-        "src/templates/components/footer.jinja",
-        "src/templates/components/navbar.jinja",
-        "src/templates/api.jinja",
-        "src/placeholder/__init__.py",
-    ])
+    templated_files: list[str] = field(
+        default_factory=lambda: [
+            "README.md",
+            "pyproject.toml",
+            "SECURITY.md",
+            "LICENSE",
+            "CONTRIBUTING.md",
+            "src/static/robots.txt",
+            "src/placeholder/query_processor.py",
+            "src/placeholder/__init__.py",
+            "src/server/templates/base.jinja",
+            "src/server/templates/components/footer.jinja",
+            "src/server/templates/components/navbar.jinja",
+            "src/server/templates/api.jinja",
+        ]
+    )
 
     def interactive_setup(self) -> None:
         """Interactive configuration setup."""
         console.rule("[bold blue]Interactive Configuration Setup")
-        
+
         self.author = Prompt.ask("Author name", default=self.author)
         self.author_email = Prompt.ask("Author email", default=self.author_email)
         self.github_username = Prompt.ask("GitHub username", default=self.github_username)
@@ -88,6 +97,7 @@ class TemplateConfig:
         self.package_description = Prompt.ask("Project description", default=self.package_description)
         self.project_url = Prompt.ask("Project URL", default=self.project_url)
 
+
 class TemplateProcessor:
     def __init__(self, config: TemplateConfig, auto_yes: bool = False):
         self.config = config
@@ -96,7 +106,7 @@ class TemplateProcessor:
     def process_files(self) -> None:
         """Process all template files."""
         console.rule("[bold blue]Processing template files")
-        
+
         # Handle template README first
         template_readme = Path("template_README.md")
         if template_readme.exists():
@@ -106,7 +116,7 @@ class TemplateProcessor:
                 console.print("[yellow]Backed up existing README.md to README.old.md[/yellow]")
             template_readme.rename("README.md")
             console.print("[green]✓ Replaced[/green] README.md with template version")
-        
+
         for file_path in self.config.templated_files:
             path = Path(file_path)
             if not path.exists():
@@ -153,8 +163,9 @@ class TemplateProcessor:
 
         for pattern, replacement in replacements:
             content = re.sub(pattern, replacement, content)
-        
+
         file_path.write_text(content)
+
 
 class ProjectSetup:
     def __init__(self, auto_yes: bool = False):
@@ -194,6 +205,7 @@ class ProjectSetup:
         if Path(".pre-commit-config.yaml").exists():
             console.print("[yellow]Installing pre-commit hooks...[/yellow]")
             subprocess.run(["pre-commit", "install"], check=True)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Template configuration and setup tool")
@@ -249,5 +261,6 @@ def main():
         console.print(f"[bold red]Error:[/bold red] {str(e)}")
         sys.exit(1)
 
+
 if __name__ == "__main__":
-    main() 
+    main()
