@@ -60,6 +60,8 @@ jobs:
         # Store original templated files for comparison
         echo "Getting list of templated files..."
         TEMPLATED_FILES=$(yq eval '.templated_files[]' template.yaml)
+        # Store package name before template.yaml is deleted
+        PACKAGE_NAME=$(yq eval '.package_name' template.yaml)
 
         # Create a temporary file to store hashes
         HASH_FILE=$(mktemp)
@@ -110,8 +112,7 @@ jobs:
         # Clean up hash file
         rm -f "$HASH_FILE"
 
-        # Verify package directory was renamed
-        PACKAGE_NAME=$(yq eval '.package_name' template.yaml)
+        # Verify package directory was renamed (using previously stored PACKAGE_NAME)
         if [ ! -d "src/$PACKAGE_NAME" ]; then
           echo "Package directory was not renamed to $PACKAGE_NAME"
           exit 1
