@@ -119,6 +119,12 @@ isort .
 
 # Lint code
 pylint src/
+
+# Run pre-commit hooks
+pre-commit run --all-files
+
+# Or install pre-commit hooks to run automatically
+pre-commit install
 ```
 
 ### Docker Support
