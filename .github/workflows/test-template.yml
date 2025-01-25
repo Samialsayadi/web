@@ -55,7 +55,7 @@ jobs:
         mkdir test_dir
         cp -r src test_dir/
         cp apply_template.sh template.yaml requirements.txt test_dir/
-        
+
         # Copy all template files from the list
         while IFS= read -r file; do
             # Create directory if needed

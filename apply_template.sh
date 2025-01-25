@@ -106,11 +106,11 @@ yq eval '.templated_files[]' template.yaml | while read -r file; do
         package_name=$(yq '.package_name' template.yaml)
         github_username=$(yq '.github_username' template.yaml)
         github_repository=$(yq '.github_repository' template.yaml)
-        
+
         # Create temp file
         temp_file="${file}.tmp"
         cp "$file" "$temp_file"
-        
+
         # Replace basic variables
         if [[ "$file" == *.jinja ]]; then
             sed -i.bak "s/{!{ package_name }!}/${package_name}/g" "$temp_file"
@@ -121,13 +121,13 @@ yq eval '.templated_files[]' template.yaml | while read -r file; do
             sed -i.bak "s/{{ github_username }}/${github_username}/g" "$temp_file"
             sed -i.bak "s/{{ github_repository }}/${github_repository}/g" "$temp_file"
         fi
-        
+
         # Handle Python imports
         if [[ "$file" == *.py ]]; then
             sed -i.bak "s/from placeholder\./from ${package_name}./g" "$temp_file"
             sed -i.bak "s/import placeholder/import ${package_name}/g" "$temp_file"
         fi
-        
+
         mv "$temp_file" "$file"
         rm -f "$temp_file.bak"
         echo -e "${GREEN}✓ Updated${NC} $file"

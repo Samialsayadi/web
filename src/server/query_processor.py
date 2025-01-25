@@ -7,9 +7,8 @@ from fastapi.templating import Jinja2Templates
 from starlette.templating import _TemplateResponse
 
 from placeholder.main import main
-
-from .server_config import EXAMPLE_REPOS
-from .server_utils import Colors
+from server.server_config import EXAMPLE_REPOS
+from server.server_utils import Colors
 
 templates = Jinja2Templates(directory="templates")
 

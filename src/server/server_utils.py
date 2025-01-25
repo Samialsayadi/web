@@ -1,19 +1,12 @@
 """ Utility functions for the server. """
 
-import asyncio
-import math
-import shutil
-import time
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import Response
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
-
-from server.server_config import DELETE_REPO_AFTER
 
 # Initialize a rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -64,7 +57,6 @@ async def lifespan(_: FastAPI):
     """
 
     yield
-
 
 
 ## Color printing utility
