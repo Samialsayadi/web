@@ -97,87 +97,50 @@ fi
 
 echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
-
-# Define the patterns to search for files
-PATTERNS=()
-while IFS= read -r line; do
-    PATTERNS+=("$line")
-done < <(yq '.templated_files[]' template.yaml)
-
-# Read all values from template.yaml using yq and escape them
-declare -a REPLACEMENTS_KEYS=()
-declare -a REPLACEMENTS_VALUES=()
-
-# Get all the keys and values
-while IFS=': ' read -r key value; do
-    if [[ ! "$key" =~ ^#.*$ ]] && [ ! -z "$key" ]; then
-        REPLACEMENTS_KEYS+=("$key")
-        REPLACEMENTS_VALUES+=("$(printf '%s' "$value" | escape_perl)")
-    fi
-done < <(yq 'del(.templated_files)' template.yaml)
-
-# Function to replace placeholders in a file
-replace_placeholders() {
-    local file=$1
+# Process templated files
+echo -e "\n${YELLOW}Processing files...${NC}"
+yq eval '.templated_files[]' template.yaml | while read -r file; do
     if [ -f "$file" ]; then
-        local temp_file="${file}.tmp"
+        echo -e "${GREEN}Processing${NC} $file"
+        # Get basic variables we need
+        package_name=$(yq '.package_name' template.yaml)
+        github_username=$(yq '.github_username' template.yaml)
+        github_repository=$(yq '.github_repository' template.yaml)
+        
+        # Create temp file
+        temp_file="${file}.tmp"
         cp "$file" "$temp_file"
-
-        for i in "${!REPLACEMENTS_KEYS[@]}"; do
-            local key="${REPLACEMENTS_KEYS[$i]}"
-            local value="${REPLACEMENTS_VALUES[$i]}"
-
-            if [[ "$file" == *.jinja ]]; then
-                # For .jinja files, use {!{ }!} format
-                perl -pi -e "s/{!{ ${key} }!}/${value}/g" "$temp_file"
-            else
-                # For non-jinja files, use {{ }} format
-                perl -pi -e "s/{{ ${key} }}/${value}/g" "$temp_file"
-            fi
-        done
-
-        # Additional processing for Python files
-        if [[ "$file" == *.py ]]; then
-            package_name=""
-            for i in "${!REPLACEMENTS_KEYS[@]}"; do
-                if [ "${REPLACEMENTS_KEYS[$i]}" = "package_name" ]; then
-                    package_name="${REPLACEMENTS_VALUES[$i]}"
-                    break
-                fi
-            done
-            if [ ! -z "$package_name" ]; then
-                perl -pi -e "s/from placeholder\./from ${package_name}./g" "$temp_file"
-                perl -pi -e "s/import placeholder/import ${package_name}/g" "$temp_file"
-            fi
+        
+        # Replace basic variables
+        if [[ "$file" == *.jinja ]]; then
+            sed -i.bak "s/{!{ package_name }!}/${package_name}/g" "$temp_file"
+            sed -i.bak "s/{!{ github_username }!}/${github_username}/g" "$temp_file"
+            sed -i.bak "s/{!{ github_repository }!}/${github_repository}/g" "$temp_file"
+        else
+            sed -i.bak "s/{{ package_name }}/${package_name}/g" "$temp_file"
+            sed -i.bak "s/{{ github_username }}/${github_username}/g" "$temp_file"
+            sed -i.bak "s/{{ github_repository }}/${github_repository}/g" "$temp_file"
         fi
-
+        
+        # Handle Python imports
+        if [[ "$file" == *.py ]]; then
+            sed -i.bak "s/from placeholder\./from ${package_name}./g" "$temp_file"
+            sed -i.bak "s/import placeholder/import ${package_name}/g" "$temp_file"
+        fi
+        
         mv "$temp_file" "$file"
-        rm -f "${temp_file}.bak"
+        rm -f "$temp_file.bak"
         echo -e "${GREEN}✓ Updated${NC} $file"
     else
         echo -e "${RED}✗ File not found:${NC} $file"
-    fi
-}
-
-# Process files
-echo -e "\n${YELLOW}Processing files...${NC}"
-for pattern in "${PATTERNS[@]}"; do
-    # Handle both direct file paths and patterns
-    if [[ "$pattern" == *"*"* ]]; then
-        # It's a pattern, use find
-        while IFS= read -r file; do
-            replace_placeholders "$file"
-        done < <(find . -path "./$pattern" -type f 2>/dev/null)
-    else
-        # It's a direct file path
-        replace_placeholders "$pattern"
     fi
 done
 
 # Rename placeholder directory
 if [ -d "src/placeholder" ]; then
-    mv "src/placeholder" "src/${REPLACEMENTS_VALUES[package_name]}"
-    echo -e "${GREEN}✓ Renamed${NC} src/placeholder to src/${REPLACEMENTS_VALUES[package_name]}"
+    package_name=$(yq '.package_name' template.yaml)
+    mv "src/placeholder" "src/${package_name}"
+    echo -e "${GREEN}✓ Renamed${NC} src/placeholder to src/${package_name}"
 fi
 
 # Prompt for README swap with preview
