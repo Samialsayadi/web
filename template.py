@@ -8,7 +8,6 @@ import argparse
 import re
 import subprocess
 import sys
-import venv
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List
