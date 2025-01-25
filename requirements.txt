@@ -6,3 +6,4 @@ python-dotenv
 slowapi
 starlette
 uvicorn
+rich>=13.7.0
