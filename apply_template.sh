@@ -99,7 +99,7 @@ echo -e "\n${GREEN}Proceeding with template application...${NC}"
 
 
 # Define the patterns to search for files
-PATTERNS=($(get_yaml_value "templated_files"))
+mapfile -t PATTERNS < <(yq eval '.templated_files[]' template.yaml)
 
 # Read all values from template.yaml using yq and escape them
 declare -A REPLACEMENTS
