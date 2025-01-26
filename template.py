@@ -341,7 +341,10 @@ def main():
         else:
             console.log("[yellow]Template files kept. You can delete them manually later.[/yellow]")
 
-        console.log("\n[bold green]Template application completed![/bold green]")
+        console.rule("[bold green]Finished![/bold green]")
+
+        console.print("\n[bold cyan]You can now run the project with the following commands:[/bold cyan]")
+        console.print("[bold]cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000[/bold]")
 
     except Exception as e:
         console.log(f"[bold red]Error:[/bold red] {str(e)}")
