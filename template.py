@@ -298,18 +298,20 @@ def print_config(config: TemplateConfig) -> None:
     header("Template Configuration")
     console.print(
         box(
-            f"""[bold]Project Details:[/bold]
-  Project Name: {config.project_name}
-  Package Name: {config.package_name}
-  Description: {config.package_description}
+            f"""[bold underline]Project Details:[/bold underline]
+  [cyan]Project Name:[/cyan] {config.project_name}
+  [cyan]Package Name:[/cyan] {config.package_name}
+  [cyan]Description:[/cyan] {config.package_description}
 
-[bold]Author Details:[/bold]
-  Author: {config.author}
-  GitHub: {config.github_username}
+[bold underline]Author Details:[/bold underline]
+  [cyan]Author:[/cyan] {config.author}
+  [cyan]GitHub:[/cyan] {config.github_username}
 
 [bold]URLs:[/bold]
-  Repository: {config.github_repository}
-  Project URL: {config.project_url}""",
+  [cyan]Repository:[/cyan] {config.github_repository}
+  [cyan]Project URL:[/cyan] {config.project_url}
+
+  ... (more in template.py)""",
             title="Configuration Summary",
         )
     )
