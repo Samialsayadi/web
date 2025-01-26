@@ -159,6 +159,4 @@ https://coolors.co/4a8394-62aec5-88c0d5-add2e4-ffffff-f678a7-ee5c8d-e64072-d91c5
 - [TailwindCSS](https://tailwindcss.com/) for styling
 - [Gitingest](https://gitingest.com/) for the inspiration
 
-## ⭐ Project Growth
 
-[![Star History Chart](https://api.star-history.com/svg?repos=atyrode/gitemplate&type=Date)](https://star-history.com/#atyrode/gitemplate&Date)
