@@ -8,7 +8,6 @@
 
 A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
 
-
 ## ⚡ TL;DR
 
 You may copy and paste the following code block to get started:
