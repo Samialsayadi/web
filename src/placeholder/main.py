@@ -23,4 +23,4 @@ async def main(
 
     print(f"Source: {source}")
 
-    return "This website was generated with the default values of the template!"
+    return "This website was generated with the default values of the template! It does not do anything by default."
