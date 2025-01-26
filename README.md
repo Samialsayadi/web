@@ -21,7 +21,44 @@ python template.py -i
 cd src && python -m uvicorn server.main:app --reload
 ```
 
-## 🚀 Quick Start
+## ✨ Features
+
+- **Production-Ready Structure**: Organized project layout following best practices
+- **Modern Stack**:
+  - FastAPI for high-performance APIs
+  - Jinja2 templating engine
+  - TailwindCSS for modern styling
+  - SQLAlchemy support (optional)
+- **Security**:
+  - Built-in rate limiting
+  - Trusted host middleware
+  - Security headers configuration
+  - CORS configuration
+  - Environment variables management
+- **Deployment Ready**:
+  - Docker support with multi-stage builds
+  - GitHub Actions workflows for:
+    - CI/CD pipeline
+    - PyPI publishing
+    - Docker image building
+  - Health check endpoints
+  - Production-grade logging
+- **Developer Experience**:
+  - Pre-configured development tools:
+    - Black for code formatting
+    - isort for import sorting
+    - pylint for code analysis
+    - mypy for type checking
+    - pytest for testing
+  - Pre-commit hooks for code quality
+  - Type hints and comprehensive docstrings
+  - Hot reload during development
+- **Template System**:
+  - Easy customization through `template.py`
+  - Flexible project structure
+  - Configurable dependencies
+
+## 🚀 Quickl Start
 
 1. Use this template by clicking "Use this template" on GitHub or clone it:
 
@@ -61,43 +98,6 @@ python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Visit `http://localhost:8000` to see your application running!
-
-## ✨ Features
-
-- **Production-Ready Structure**: Organized project layout following best practices
-- **Modern Stack**:
-  - FastAPI for high-performance APIs
-  - Jinja2 templating engine
-  - TailwindCSS for modern styling
-  - SQLAlchemy support (optional)
-- **Security**:
-  - Built-in rate limiting
-  - Trusted host middleware
-  - Security headers configuration
-  - CORS configuration
-  - Environment variables management
-- **Deployment Ready**:
-  - Docker support with multi-stage builds
-  - GitHub Actions workflows for:
-    - CI/CD pipeline
-    - PyPI publishing
-    - Docker image building
-  - Health check endpoints
-  - Production-grade logging
-- **Developer Experience**:
-  - Pre-configured development tools:
-    - Black for code formatting
-    - isort for import sorting
-    - pylint for code analysis
-    - mypy for type checking
-    - pytest for testing
-  - Pre-commit hooks for code quality
-  - Type hints and comprehensive docstrings
-  - Hot reload during development
-- **Template System**:
-  - Easy customization through `template.py`
-  - Flexible project structure
-  - Configurable dependencies
 
 ## 💻 Development
 
