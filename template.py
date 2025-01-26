@@ -281,6 +281,8 @@ class ProjectSetup:
         elif Path("requirements.txt").exists():
             subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
 
+        console.rule("[bold blue]Installing pre-commit hooks")
+
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
             if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
