@@ -170,6 +170,7 @@ If you are hosting it on a domain, you can specify the allowed hostnames via env
             "src/static/robots.txt",
             "src/placeholder/__init__.py",
             "src/server/query_processor.py",
+            "src/server/main.py",
             # Note: In .jinja files, we use the {!{ ... }!} syntax instead of {{ ... }}.
             "src/server/templates/base.jinja",
             "src/server/templates/components/footer.jinja",
@@ -236,7 +237,7 @@ class TemplateProcessor:
 
         # Handle Jinja templates
         if file_path.suffix == ".jinja":
-            pattern = r"{!{\s*(\w+)\s*}!}"
+            pattern = r"{\!{\s*(\w+)\s*}\!}"
             repl = lambda m: getattr(self.config, m.group(1), m.group(0))
         else:
             pattern = r"{{\s*(\w+)\s*}}"
