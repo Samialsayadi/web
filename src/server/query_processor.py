@@ -73,7 +73,7 @@ def _print_error(url: str, e: Exception) -> None:
     e : Exception
         The exception raised during the query or process.
     """
-    console.print(f"[danger]URL: {url}\nError: {e}[/danger]")
+    console.log(f"[ko]Fail[/ko]: {url}\n[ko]Error[/ko]: {e}")
 
 
 def _print_success(url: str) -> None:
@@ -85,4 +85,4 @@ def _print_success(url: str) -> None:
     url : str
         The URL associated with the successful query.
     """
-    console.print(f"[success]Success: {url}[/success]")
+    console.log(f"[ok]Success[/ok]: {url}")
