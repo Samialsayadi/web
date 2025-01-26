@@ -328,11 +328,6 @@ def cleanup(config: TemplateConfig, auto_yes: bool = False) -> None:
     else:
         console.log("[warn]Template files kept. You can delete them manually later.[/warn]")
 
-    header("Finished!", style="ok")
-
-    console.log("\n[info]You can now run the project with the following commands:[/info]")
-    console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
-
 
 def main():
     parser = argparse.ArgumentParser(description="Template configuration and setup tool")
@@ -348,18 +343,7 @@ def main():
         if args.interactive:
             config.interactive_setup()
 
-        # Preview configuration
-        console.rule("[bold blue]Template Configuration")
-        console.print(f"[bold]Project Details:[/bold]")
-        console.print(f"  Project Name: {config.project_name}")
-        console.print(f"  Package Name: {config.package_name}")
-        console.print(f"  Description: {config.package_description}")
-        console.print(f"\n[bold]Author Details:[/bold]")
-        console.print(f"  Author: {config.author}")
-        console.print(f"  GitHub: {config.github_username}")
-        console.print(f"\n[bold]URLs:[/bold]")
-        console.print(f"  Repository: {config.github_repository}")
-        console.print(f"  Project URL: {config.project_url}")
+        print_config(config)
 
         if not args.yes and not Confirm.ask("\nWould you like to apply this configuration?"):
             console.log("[yellow]Template application cancelled.[/yellow]")
@@ -375,6 +359,11 @@ def main():
 
         print_config(config)
         cleanup(config, args.yes)
+
+        header("Finished!", style="ok")
+
+        console.log("\n[info]You can now run the project with the following commands:[/info]")
+        console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
 
     except Exception as e:
         console.log(f"[danger]Error:[/danger] {str(e)}")
