@@ -282,14 +282,15 @@ class ProjectSetup:
         console.rule("[bold blue]Installing pre-commit hooks")
 
         # Install pre-commit hooks
-        header("Installing pre-commit hooks")
-
-        if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
-            console.log("[warn]Installing pre-commit hooks...[/warn]")
-            subprocess.run(["venv/bin/pre-commit", "install"], check=True)
-            console.log("[ok]Pre-commit hooks installed successfully.[/ok]")
-        else:
-            console.log("[warn]Skipping pre-commit hooks installation.[/warn]")
+        if Path(".pre-commit-config.yaml").exists():
+            if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
+                # Ensure pre-commit is installed in the virtual environment
+                subprocess.run([sys.executable, "-m", "pip", "install", "pre-commit"], check=True)
+                # Use the full path to pre-commit in the virtual environment
+                subprocess.run([f"{sys.executable}", "-m", "pre_commit", "install"], check=True)
+                console.log("[green]Pre-commit hooks installed successfully.[/green]")
+            else:
+                console.log("[yellow]Skipping pre-commit hooks installation.[/yellow]")
 
 
 def print_config(config: TemplateConfig) -> None:
