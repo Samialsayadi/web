@@ -181,15 +181,18 @@ If you are hosting it on a domain, you can specify the allowed hostnames via env
     def interactive_setup(self) -> None:
         """Interactive configuration setup."""
         header("Interactive Configuration Setup")
+        console.print("[info]Press Enter to use the default value shown in brackets[/info]\n")
 
-        self.author = Prompt.ask("Author name", default=self.author)
-        self.author_email = Prompt.ask("Author email", default=self.author_email)
-        self.github_username = Prompt.ask("GitHub username", default=self.github_username)
-        self.github_repository = Prompt.ask("GitHub repository", default=self.github_repository)
-        self.package_name = Prompt.ask("Package name", default=self.package_name)
-        self.project_name = Prompt.ask("Project name", default=self.project_name)
-        self.package_description = Prompt.ask("Project description", default=self.package_description)
-        self.project_url = Prompt.ask("Project URL", default=self.project_url)
+        self.author = Prompt.ask("Author name", default=self.author, show_default=True)
+        self.author_email = Prompt.ask("Author email", default=self.author_email, show_default=True)
+        self.github_username = Prompt.ask("GitHub username", default=self.github_username, show_default=True)
+        self.github_repository = Prompt.ask("GitHub repository", default=self.github_repository, show_default=True)
+        self.package_name = Prompt.ask("Package name", default=self.package_name, show_default=True)
+        self.project_name = Prompt.ask("Project name", default=self.project_name, show_default=True)
+        self.package_description = Prompt.ask(
+            "Project description", default=self.package_description, show_default=True
+        )
+        self.project_url = Prompt.ask("Project URL", default=self.project_url, show_default=True)
 
 
 class TemplateProcessor:
