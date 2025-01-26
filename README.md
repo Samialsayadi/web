@@ -139,7 +139,8 @@ docker run -p 8000:8000 your-app-name
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project. In its current state, the file is templated, but it should give
+you a good starting point.
 
 ## 📄 License
 
