@@ -285,9 +285,10 @@ class ProjectSetup:
                     [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True, capture_output=True
                 )
 
-            console.print("[ok]✓ Installed dependencies[/ok]")
+            console.print("[ok]✓ Installed dependencies[/ok]\n")
 
-        console.rule("[bold blue]Installing pre-commit hooks")
+        header("Installing pre-commit hooks")
+
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
             if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
