@@ -58,7 +58,7 @@ cd src && python -m uvicorn server.main:app --reload
   - Flexible project structure
   - Configurable dependencies
 
-## 🚀 Quickl Start
+## 🚀 Quick Start
 
 1. Use this template by clicking "Use this template" on GitHub or clone it:
 
