@@ -1,13 +1,13 @@
 # Gitemplate
 
 [![Image](./docs/frontpage.png "Gitemplate main page")](https://gitemplate.com)
-
-A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
-
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
+
 
 ## ⚡ TL;DR
 
