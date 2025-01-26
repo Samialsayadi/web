@@ -152,3 +152,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Jinja2](https://jinja.palletsprojects.com/) for templating
 - [TailwindCSS](https://tailwindcss.com/) for styling
 - [Gitingest](https://gitingest.com/) for the inspiration
+
+## ⭐ Project Growth
+
+[![Star History Chart](https://api.star-history.com/svg?repos=atyrode/gitemplate&type=Date)](https://star-history.com/#atyrode/gitemplate&Date)
