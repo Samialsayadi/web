@@ -357,13 +357,12 @@ def main():
         setup = ProjectSetup(args.yes)
         setup.setup_environment()
 
-        print_config(config)
         cleanup(config, args.yes)
 
         header("Finished!", style="ok")
 
-        console.log("\n[info]You can now run the project with the following commands:[/info]")
-        console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
+        console.log("[info]You can now run the project with the following commands:[/info]")
+        console.print("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
 
     except Exception as e:
         console.log(f"[danger]Error:[/danger] {str(e)}")
