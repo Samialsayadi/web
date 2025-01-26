@@ -204,8 +204,8 @@ class TemplateProcessor:
         # Handle README.md
         if Path("README.md").exists():
             if self.auto_yes or Confirm.ask("Would you like to use the template README instead of the current one?"):
-                Path("README.md").rename("README.old.md")
-                console.print("[warn]Backed up existing README.md to README.old.md[/warn]")
+                Path("README.md").rename("README.template.md")
+                console.print("[warn]Backed up existing README.md to README.template.md[/warn]")
                 # Create new README from template
                 Path("README.md").write_text(self.config.readme_template)
                 console.print("[ok]✓ Created[/ok] new README.md from template")
@@ -273,11 +273,19 @@ class ProjectSetup:
             subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
 
         # Install dependencies using pip
-        console.print("[yellow]Installing dependencies...[/yellow]")
-        if Path("requirements-dev.txt").exists():
-            subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"], check=True)
-        elif Path("requirements.txt").exists():
-            subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True)
+        with console.status("[yellow]Installing dependencies...[/yellow]", spinner="dots"):
+            if Path("requirements-dev.txt").exists():
+                subprocess.run(
+                    [sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"],
+                    check=True,
+                    capture_output=True,
+                )
+            elif Path("requirements.txt").exists():
+                subprocess.run(
+                    [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True, capture_output=True
+                )
+
+            console.print("[ok]✓ Installed dependencies[/ok]")
 
         console.rule("[bold blue]Installing pre-commit hooks")
 
@@ -362,7 +370,7 @@ def main():
         header("Finished!", style="ok")
 
         console.print("[info]You can now run the project with the following commands:[/info]")
-        console.print("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
+        console.print("\ncd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000\n")
 
         rule()
 
