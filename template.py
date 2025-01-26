@@ -362,13 +362,13 @@ def main():
             console.print("[yellow]Template application cancelled.[/yellow]")
             return
 
-        # Process template files
-        processor = TemplateProcessor(config, args.yes)
-        processor.process_files()
-
         # Set up development environment
         setup = ProjectSetup(args.yes)
         setup.setup_environment()
+
+        # Process template files
+        processor = TemplateProcessor(config, args.yes)
+        processor.process_files()
 
         cleanup(config, args.yes)
 
