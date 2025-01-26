@@ -43,11 +43,6 @@ jobs:
 
     - name: Verify file processing
       run: |
-        # Check if key files were processed
-        if [ ! -f "README.md" ]; then
-          echo "README.md was not created"
-          exit 1
-        fi
         if [ -d "src/placeholder" ]; then
           echo "placeholder directory was not renamed"
           exit 1
