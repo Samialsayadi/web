@@ -206,18 +206,18 @@ class TemplateProcessor:
         if Path("README.md").exists():
             if self.auto_yes or Confirm.ask("Would you like to use the template README instead of the current one?"):
                 Path("README.md").rename("README.old.md")
-                console.print("[yellow]Backed up existing README.md to README.old.md[/yellow]")
+                console.log("[yellow]Backed up existing README.md to README.old.md[/yellow]")
                 # Create new README from template
                 Path("README.md").write_text(self.config.readme_template)
-                console.print("[green]✓ Created[/green] new README.md from template")
+                console.log("[green]✓ Created[/green] new README.md from template")
 
         for file_path in self.config.templated_files:
             path = Path(file_path)
             if not path.exists():
-                console.print(f"[red]✗ File not found:[/red] {file_path}")
+                console.log(f"[red]✗ File not found:[/red] {file_path}")
                 continue
 
-            console.print(f"[green]Processing[/green] {file_path}")
+            console.log(f"[green]Processing[/green] {file_path}")
             self._process_file(path)
 
         # Rename placeholder directory
@@ -225,7 +225,7 @@ class TemplateProcessor:
         if placeholder_dir.exists():
             new_dir = Path(f"src/{self.config.package_name}")
             placeholder_dir.rename(new_dir)
-            console.print(f"[green]✓ Renamed[/green] {placeholder_dir} to {new_dir}")
+            console.log(f"[green]✓ Renamed[/green] {placeholder_dir} to {new_dir}")
 
             # Update imports in all Python files
             for py_file in Path("src").rglob("*.py"):
@@ -271,11 +271,11 @@ class ProjectSetup:
         # Create virtual environment using venv
         venv_path = Path("venv")
         if not venv_path.exists():
-            console.print("[yellow]Creating virtual environment...[/yellow]")
+            console.log("[yellow]Creating virtual environment...[/yellow]")
             subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
 
         # Install dependencies using pip
-        console.print("[yellow]Installing dependencies...[/yellow]")
+        console.log("[yellow]Installing dependencies...[/yellow]")
         if Path("requirements-dev.txt").exists():
             subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"], check=True)
         elif Path("requirements.txt").exists():
@@ -284,11 +284,11 @@ class ProjectSetup:
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
             if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
-                console.print("[yellow]Installing pre-commit hooks...[/yellow]")
+                console.log("[yellow]Installing pre-commit hooks...[/yellow]")
                 subprocess.run(["pre-commit", "install"], check=True)
-                console.print("[green]Pre-commit hooks installed successfully.[/green]")
+                console.log("[green]Pre-commit hooks installed successfully.[/green]")
             else:
-                console.print("[yellow]Skipping pre-commit hooks installation.[/yellow]")
+                console.log("[yellow]Skipping pre-commit hooks installation.[/yellow]")
 
 
 def main():
@@ -319,7 +319,7 @@ def main():
         console.print(f"  Project URL: {config.project_url}")
 
         if not args.yes and not Confirm.ask("\nWould you like to apply this configuration?"):
-            console.print("[yellow]Template application cancelled.[/yellow]")
+            console.log("[yellow]Template application cancelled.[/yellow]")
             return
 
         # Process template files
@@ -335,14 +335,14 @@ def main():
             if Path("README.md.bak").exists():
                 Path("README.md.bak").unlink()
             Path(__file__).unlink()
-            console.print("[green]Template files cleaned up.[/green]")
+            console.log("[green]Template files cleaned up.[/green]")
         else:
-            console.print("[yellow]Template files kept. You can delete them manually later.[/yellow]")
+            console.log("[yellow]Template files kept. You can delete them manually later.[/yellow]")
 
-        console.print("\n[bold green]Template application completed![/bold green]")
+        console.log("\n[bold green]Template application completed![/bold green]")
 
     except Exception as e:
-        console.print(f"[bold red]Error:[/bold red] {str(e)}")
+        console.log(f"[bold red]Error:[/bold red] {str(e)}")
         sys.exit(1)
 
 
