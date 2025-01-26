@@ -14,7 +14,7 @@ from typing import List
 
 from rich.prompt import Confirm, Prompt
 
-from console import box, console, header, rule
+from src.console import box, console, header, rule
 
 
 @dataclass
