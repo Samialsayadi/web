@@ -329,7 +329,7 @@ def cleanup(config: TemplateConfig, auto_yes: bool = False) -> None:
     header("Finished!", style="ok")
 
     console.log("\n[info]You can now run the project with the following commands:[/info]")
-    console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000", title="Run Command")
+    console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
 
 
 def main():
