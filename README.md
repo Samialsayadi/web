@@ -1,4 +1,4 @@
-# 🎨 Gitemplate
+# Gitemplate
 
 [![Image](./docs/frontpage.png "Gitemplate main page")](https://gitemplate.com)
 
