@@ -13,7 +13,7 @@ A production-ready FastAPI template specifically designed for building AI/LLM-po
 - 🎨 Jinja2 templating engine
 - 💅 TailwindCSS for utility-first styling
 - ⚡️ Deploy your app in just an hour
-  
+
 Here are some projects based on this template: [gitingest.com](http://gitingest.com) and [gitdiagram.com](http://gitdiagram.com).
 
 We'd love to see what you build! Share your projects in our [Discussions](https://github.com/atyrode/gitemplate/discussions) section and become part of our growing ecosystem.
