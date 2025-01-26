@@ -22,8 +22,8 @@ Thanks for your interest in contributing to {{ project_name }}! 🚀 {{ project_
 3. Set up the development environment and install dependencies:
 
    ```bash
-   python -m venv .venv
-   source .venv/bin/activate
+   python -m venv venv
+   source venv/bin/activate
    pip install -r requirements-dev.txt
    pre-commit install
    ```

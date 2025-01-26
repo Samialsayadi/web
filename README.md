@@ -15,7 +15,7 @@ You may copy and paste the following code block to get started:
 
 ```bash
 git clone https://github.com/atyrode/gitemplate.git && cd gitemplate
-python -m venv .venv && source .venv/bin/activate  # Windows: `.venv\Scripts\activate`
+python -m venv venv && source venv/bin/activate  # Windows: `venv\Scripts\activate`
 pip install rich
 python template.py -i
 cd src && python -m uvicorn server.main:app --reload
@@ -33,8 +33,8 @@ cd gitemplate
 2. Create and activate a virtual environment:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: `.venv\Scripts\activate`
+python -m venv venv
+source venv/bin/activate  # On Windows: `venv\Scripts\activate`
 pip install rich # For better logging
 ```
 
