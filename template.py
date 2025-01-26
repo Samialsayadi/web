@@ -330,18 +330,6 @@ def print_config(config: TemplateConfig) -> None:
     )
 
 
-def cleanup(config: TemplateConfig, auto_yes: bool = False) -> None:
-    """Clean up template files."""
-    if auto_yes or Confirm.ask("Would you like to clean up the template files?"):
-        # Clean up template files
-        for file in config.templated_files:
-            if Path(file).exists():
-                Path(file).unlink()
-        console.print("[ok]Template files cleaned up.[/ok]")
-    else:
-        console.print("[warn]Template files kept. You can delete them manually later.[/warn]")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Template configuration and setup tool")
     parser.add_argument("-y", "--yes", action="store_true", help="Auto-accept all prompts")
@@ -369,8 +357,6 @@ def main():
         # Process template files
         processor = TemplateProcessor(config, args.yes)
         processor.process_files()
-
-        cleanup(config, args.yes)
 
         header("Finished!", style="ok")
 
