@@ -147,6 +147,11 @@ you a good starting point.
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Palette
+
+The colors used for this project are the following:
+https://coolors.co/4a8394-62aec5-88c0d5-add2e4-ffffff-f678a7-ee5c8d-e64072-d91c55
+
 ## 🙏 Acknowledgments
 
 - [FastAPI](https://fastapi.tiangolo.com/) for the amazing web framework
