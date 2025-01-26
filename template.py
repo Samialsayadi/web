@@ -288,15 +288,19 @@ class ProjectSetup:
             console.print("[ok]✓ Installed dependencies[/ok]")
 
         console.rule("[bold blue]Installing pre-commit hooks")
-
         # Install pre-commit hooks
         if Path(".pre-commit-config.yaml").exists():
             if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
-                # Ensure pre-commit is installed in the virtual environment
-                subprocess.run([sys.executable, "-m", "pip", "install", "pre-commit"], check=True)
-                # Use the full path to pre-commit in the virtual environment
-                subprocess.run([f"{sys.executable}", "-m", "pre_commit", "install"], check=True)
-                console.print("[green]Pre-commit hooks installed successfully.[/green]")
+                with console.status("[yellow]Installing pre-commit hooks...[/yellow]", spinner="dots"):
+                    # Ensure pre-commit is installed in the virtual environment
+                    subprocess.run(
+                        [sys.executable, "-m", "pip", "install", "pre-commit"], check=True, capture_output=True
+                    )
+                    # Use the full path to pre-commit in the virtual environment
+                    subprocess.run(
+                        [f"{sys.executable}", "-m", "pre_commit", "install"], check=True, capture_output=True
+                    )
+                    console.print("[ok]✓ Pre-commit hooks installed successfully[/ok]")
             else:
                 console.print("[yellow]Skipping pre-commit hooks installation.[/yellow]")
 
