@@ -26,9 +26,8 @@ cd src && python -m uvicorn server.main:app --reload
 - **Production-Ready Structure**: Organized project layout following best practices
 - **Modern Stack**:
   - FastAPI for high-performance APIs
-  - Jinja2 templating engine
+  - Jinja2 templating engine for the front-end
   - TailwindCSS for modern styling
-  - SQLAlchemy support (optional)
 - **Security**:
   - Built-in rate limiting
   - Trusted host middleware
