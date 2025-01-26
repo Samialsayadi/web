@@ -6,9 +6,19 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg)](https://fastapi.tiangolo.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A modern, production-ready template for FastAPI projects with Jinja2 templating and TailwindCSS styling. Skip the boring part and get straight to building your next web application!
+A production-ready FastAPI template specifically designed for building AI/LLM-powered web applications.
 
-## ⚡ TL;DR
+- 🤖 Optimized for LLM integration and AI workflows
+- 🚀 FastAPI for high-performance API development
+- 🎨 Jinja2 templating engine
+- 💅 TailwindCSS for utility-first styling
+- ⚡️ Deploy your app in just an hour
+  
+Here are some projects based on this template: [gitingest.com](http://gitingest.com) and [gitdiagram.com](http://gitdiagram.com).
+
+We'd love to see what you build! Share your projects in our [Discussions](https://github.com/atyrode/gitemplate/discussions) section and become part of our growing ecosystem.
+
+## TL;DR
 
 You may copy and paste the following code block to get started:
 
