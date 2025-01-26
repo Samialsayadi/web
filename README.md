@@ -18,7 +18,7 @@ git clone https://github.com/atyrode/gitemplate.git && cd gitemplate
 python -m venv .venv && source .venv/bin/activate  # Windows: `.venv\Scripts\activate`
 pip install rich
 python template.py -i
-cd src && python -m uvicorn app:app --reload
+cd src && python -m uvicorn server.main:app --reload
 ```
 
 ## 🚀 Quick Start
@@ -57,7 +57,7 @@ python template.py
 
 ```bash
 cd src
-python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
+python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Visit `http://localhost:8000` to see your application running!
