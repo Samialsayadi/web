@@ -205,18 +205,18 @@ class TemplateProcessor:
         if Path("README.md").exists():
             if self.auto_yes or Confirm.ask("Would you like to use the template README instead of the current one?"):
                 Path("README.md").rename("README.old.md")
-                console.log("[warn]Backed up existing README.md to README.old.md[/warn]")
+                console.print("[warn]Backed up existing README.md to README.old.md[/warn]")
                 # Create new README from template
                 Path("README.md").write_text(self.config.readme_template)
-                console.log("[ok]✓ Created[/ok] new README.md from template")
+                console.print("[ok]✓ Created[/ok] new README.md from template")
 
         for file_path in self.config.templated_files:
             path = Path(file_path)
             if not path.exists():
-                console.log(f"[danger]✗ File not found:[/danger] {file_path}")
+                console.print(f"[danger]✗ File not found:[/danger] {file_path}")
                 continue
 
-            console.log(f"[ok]Processing[/ok] {file_path}")
+            console.print(f"[ok]Processing[/ok] {file_path}")
             self._process_file(path)
 
         # Rename placeholder directory
@@ -224,7 +224,7 @@ class TemplateProcessor:
         if placeholder_dir.exists():
             new_dir = Path(f"src/{self.config.package_name}")
             placeholder_dir.rename(new_dir)
-            console.log(f"[ok]✓ Renamed[/ok] {placeholder_dir} to {new_dir}")
+            console.print(f"[ok]✓ Renamed[/ok] {placeholder_dir} to {new_dir}")
 
             # Update imports in all Python files
             for py_file in Path("src").rglob("*.py"):
@@ -269,11 +269,11 @@ class ProjectSetup:
 
         # Create virtual environment
         if not Path("venv").exists():
-            console.log("[warn]Creating virtual environment...[/warn]")
+            console.print("[warn]Creating virtual environment...[/warn]")
             subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
 
         # Install dependencies using pip
-        console.log("[yellow]Installing dependencies...[/yellow]")
+        console.print("[yellow]Installing dependencies...[/yellow]")
         if Path("requirements-dev.txt").exists():
             subprocess.run([sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"], check=True)
         elif Path("requirements.txt").exists():
@@ -288,9 +288,9 @@ class ProjectSetup:
                 subprocess.run([sys.executable, "-m", "pip", "install", "pre-commit"], check=True)
                 # Use the full path to pre-commit in the virtual environment
                 subprocess.run([f"{sys.executable}", "-m", "pre_commit", "install"], check=True)
-                console.log("[green]Pre-commit hooks installed successfully.[/green]")
+                console.print("[green]Pre-commit hooks installed successfully.[/green]")
             else:
-                console.log("[yellow]Skipping pre-commit hooks installation.[/yellow]")
+                console.print("[yellow]Skipping pre-commit hooks installation.[/yellow]")
 
 
 def print_config(config: TemplateConfig) -> None:
@@ -324,9 +324,9 @@ def cleanup(config: TemplateConfig, auto_yes: bool = False) -> None:
         for file in config.templated_files:
             if Path(file).exists():
                 Path(file).unlink()
-        console.log("[ok]Template files cleaned up.[/ok]")
+        console.print("[ok]Template files cleaned up.[/ok]")
     else:
-        console.log("[warn]Template files kept. You can delete them manually later.[/warn]")
+        console.print("[warn]Template files kept. You can delete them manually later.[/warn]")
 
 
 def main():
@@ -346,7 +346,7 @@ def main():
         print_config(config)
 
         if not args.yes and not Confirm.ask("\nWould you like to apply this configuration?"):
-            console.log("[yellow]Template application cancelled.[/yellow]")
+            console.print("[yellow]Template application cancelled.[/yellow]")
             return
 
         # Process template files
@@ -361,11 +361,13 @@ def main():
 
         header("Finished!", style="ok")
 
-        console.log("[info]You can now run the project with the following commands:[/info]")
+        console.print("[info]You can now run the project with the following commands:[/info]")
         console.print("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000")
 
+        rule()
+
     except Exception as e:
-        console.log(f"[danger]Error:[/danger] {str(e)}")
+        console.print(f"[danger]Error:[/danger] {str(e)}")
         sys.exit(1)
 
 
