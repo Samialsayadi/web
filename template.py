@@ -285,7 +285,7 @@ class ProjectSetup:
                     [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True, capture_output=True
                 )
 
-            console.print("[ok]✓ Installed dependencies[/ok]\n")
+            console.print("[ok]✓ Installed dependencies[/ok]")
 
         header("Installing pre-commit hooks")
 
