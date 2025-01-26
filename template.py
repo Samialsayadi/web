@@ -12,10 +12,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List
 
-from rich.console import Console
 from rich.prompt import Confirm, Prompt
 
-console = Console()
+from console import box, console, header, rule
 
 
 @dataclass
@@ -181,7 +180,7 @@ If you are hosting it on a domain, you can specify the allowed hostnames via env
 
     def interactive_setup(self) -> None:
         """Interactive configuration setup."""
-        console.rule("[bold blue]Interactive Configuration Setup")
+        header("Interactive Configuration Setup")
 
         self.author = Prompt.ask("Author name", default=self.author)
         self.author_email = Prompt.ask("Author email", default=self.author_email)
@@ -200,24 +199,24 @@ class TemplateProcessor:
 
     def process_files(self) -> None:
         """Process all template files."""
-        console.rule("[bold blue]Processing template files")
+        header("Processing template files")
 
         # Handle README.md
         if Path("README.md").exists():
             if self.auto_yes or Confirm.ask("Would you like to use the template README instead of the current one?"):
                 Path("README.md").rename("README.old.md")
-                console.log("[yellow]Backed up existing README.md to README.old.md[/yellow]")
+                console.log("[warn]Backed up existing README.md to README.old.md[/warn]")
                 # Create new README from template
                 Path("README.md").write_text(self.config.readme_template)
-                console.log("[green]✓ Created[/green] new README.md from template")
+                console.log("[ok]✓ Created[/ok] new README.md from template")
 
         for file_path in self.config.templated_files:
             path = Path(file_path)
             if not path.exists():
-                console.log(f"[red]✗ File not found:[/red] {file_path}")
+                console.log(f"[danger]✗ File not found:[/danger] {file_path}")
                 continue
 
-            console.log(f"[green]Processing[/green] {file_path}")
+            console.log(f"[ok]Processing[/ok] {file_path}")
             self._process_file(path)
 
         # Rename placeholder directory
@@ -225,7 +224,7 @@ class TemplateProcessor:
         if placeholder_dir.exists():
             new_dir = Path(f"src/{self.config.package_name}")
             placeholder_dir.rename(new_dir)
-            console.log(f"[green]✓ Renamed[/green] {placeholder_dir} to {new_dir}")
+            console.log(f"[ok]✓ Renamed[/ok] {placeholder_dir} to {new_dir}")
 
             # Update imports in all Python files
             for py_file in Path("src").rglob("*.py"):
@@ -266,12 +265,11 @@ class ProjectSetup:
 
     def setup_environment(self) -> None:
         """Set up the development environment."""
-        console.rule("[bold blue]Setting up development environment")
+        header("Setting up development environment")
 
-        # Create virtual environment using venv
-        venv_path = Path("venv")
-        if not venv_path.exists():
-            console.log("[yellow]Creating virtual environment...[/yellow]")
+        # Create virtual environment
+        if not Path("venv").exists():
+            console.log("[warn]Creating virtual environment...[/warn]")
             subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
 
         # Install dependencies using pip
@@ -284,13 +282,53 @@ class ProjectSetup:
         console.rule("[bold blue]Installing pre-commit hooks")
 
         # Install pre-commit hooks
-        if Path(".pre-commit-config.yaml").exists():
-            if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
-                console.log("[yellow]Installing pre-commit hooks...[/yellow]")
-                subprocess.run(["pre-commit", "install"], check=True)
-                console.log("[green]Pre-commit hooks installed successfully.[/green]")
-            else:
-                console.log("[yellow]Skipping pre-commit hooks installation.[/yellow]")
+        header("Installing pre-commit hooks")
+
+        if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
+            console.log("[warn]Installing pre-commit hooks...[/warn]")
+            subprocess.run(["venv/bin/pre-commit", "install"], check=True)
+            console.log("[ok]Pre-commit hooks installed successfully.[/ok]")
+        else:
+            console.log("[warn]Skipping pre-commit hooks installation.[/warn]")
+
+
+def print_config(config: TemplateConfig) -> None:
+    """Print the current configuration."""
+    header("Template Configuration")
+    console.print(
+        box(
+            f"""[bold]Project Details:[/bold]
+  Project Name: {config.project_name}
+  Package Name: {config.package_name}
+  Description: {config.package_description}
+
+[bold]Author Details:[/bold]
+  Author: {config.author}
+  GitHub: {config.github_username}
+
+[bold]URLs:[/bold]
+  Repository: {config.github_repository}
+  Project URL: {config.project_url}""",
+            title="Configuration Summary",
+        )
+    )
+
+
+def cleanup(config: TemplateConfig, auto_yes: bool = False) -> None:
+    """Clean up template files."""
+    if auto_yes or Confirm.ask("Would you like to clean up the template files?"):
+        # Clean up template files
+        for file in config.templated_files:
+            if Path(file).exists():
+                Path(file).unlink()
+        console.log("[ok]Template files cleaned up.[/ok]")
+    else:
+        console.log("[warn]Template files kept. You can delete them manually later.[/warn]")
+
+    header("Finished!", style="ok")
+
+    console.log("\n[info]You can now run the project with the following commands:[/info]")
+    console.log("cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000", title="Run Command")
 
 
 def main():
@@ -332,22 +370,11 @@ def main():
         setup = ProjectSetup(args.yes)
         setup.setup_environment()
 
-        # Clean up template files
-        if args.yes or Confirm.ask("\nWould you like to clean up template files?"):
-            if Path("README.md.bak").exists():
-                Path("README.md.bak").unlink()
-            Path(__file__).unlink()
-            console.log("[green]Template files cleaned up.[/green]")
-        else:
-            console.log("[yellow]Template files kept. You can delete them manually later.[/yellow]")
-
-        console.rule("[bold green]Finished![/bold green]")
-
-        console.print("\n[bold cyan]You can now run the project with the following commands:[/bold cyan]")
-        console.print("[bold]cd src && python -m uvicorn server.main:app --reload --host 0.0.0.0 --port 8000[/bold]")
+        print_config(config)
+        cleanup(config, args.yes)
 
     except Exception as e:
-        console.log(f"[bold red]Error:[/bold red] {str(e)}")
+        console.log(f"[danger]Error:[/danger] {str(e)}")
         sys.exit(1)
 
 

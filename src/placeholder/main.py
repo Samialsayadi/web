@@ -2,6 +2,8 @@
 
 from typing import Any
 
+from console import console
+
 
 async def main(
     source: str,
@@ -21,6 +23,6 @@ async def main(
         The resulting information from your implementation, to be used by the CLI or the API.
     """
 
-    print(f"Source: {source}")
+    console.log(f"New query: '{source}'")
 
     return "This website was generated with the default values of the template! It does not do anything by default."

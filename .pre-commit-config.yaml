@@ -99,6 +99,7 @@ repos:
             fastapi-analytics,
             pytest-asyncio,
             python-dotenv,
+            rich,
             slowapi,
             starlette,
             tiktoken,

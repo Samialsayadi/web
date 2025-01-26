@@ -5,9 +5,9 @@ from functools import partial
 from fastapi import Request
 from starlette.templating import _TemplateResponse
 
+from console import console
 from placeholder.main import main
 from server.server_config import EXAMPLE_REPOS, templates
-from server.server_utils import Colors
 
 
 async def process_query(
@@ -73,7 +73,7 @@ def _print_error(url: str, e: Exception) -> None:
     e : Exception
         The exception raised during the query or process.
     """
-    print(f"{Colors.RED}URL: {url}\nError: {e}{Colors.END}")
+    console.print(f"[danger]URL: {url}\nError: {e}[/danger]")
 
 
 def _print_success(url: str) -> None:
@@ -85,4 +85,4 @@ def _print_success(url: str) -> None:
     url : str
         The URL associated with the successful query.
     """
-    print(f"{Colors.GREEN}Success: {url}{Colors.END}")
+    console.print(f"[success]Success: {url}[/success]")
