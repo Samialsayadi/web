@@ -41,11 +41,12 @@ if allowed_hosts:
     allowed_hosts = allowed_hosts.split(",")
 else:
     # Define the default allowed hosts for the application
-    default_allowed_hosts = ["dev.gitingest.com", "*.your-project-domain.com", "localhost", "127.0.0.1"]
+    default_allowed_hosts = ["your-project-domain.com", "*.your-project-domain.com", "localhost", "127.0.0.1"]
     allowed_hosts = default_allowed_hosts
 
 # Add middleware to enforce allowed hosts
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
+# TODO: /!\ UNCOMMENT THE NEXT LINE /!\
+# app.add_middleware(TrustedHostMiddleware, allowed_hosts=allowed_hosts)
 
 
 @app.get("/health")
