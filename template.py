@@ -6,11 +6,9 @@ This script combines template configuration and project setup into a single tool
 
 import argparse
 import re
-import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
 
 from rich.prompt import Confirm, Prompt
 
@@ -262,53 +260,6 @@ class TemplateProcessor:
         file_path.write_text(content)
 
 
-class ProjectSetup:
-    def __init__(self, auto_yes: bool = False):
-        self.auto_yes = auto_yes
-
-    def setup_environment(self) -> None:
-        """Set up the development environment."""
-        header("Setting up development environment")
-
-        # Create virtual environment
-        if not Path("venv").exists():
-            console.print("[warn]Creating virtual environment...[/warn]")
-            subprocess.run([sys.executable, "-m", "venv", "venv"], check=True)
-
-        # Install dependencies using pip
-        with console.status("[yellow]Installing dependencies...[/yellow]", spinner="dots"):
-            if Path("requirements-dev.txt").exists():
-                subprocess.run(
-                    [sys.executable, "-m", "pip", "install", "-r", "requirements-dev.txt"],
-                    check=True,
-                    capture_output=True,
-                )
-            elif Path("requirements.txt").exists():
-                subprocess.run(
-                    [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"], check=True, capture_output=True
-                )
-
-            console.print("[ok]✓ Installed dependencies[/ok]")
-
-        header("Installing pre-commit hooks")
-
-        # Install pre-commit hooks
-        if Path(".pre-commit-config.yaml").exists():
-            if self.auto_yes or Confirm.ask("Would you like to install pre-commit hooks?"):
-                with console.status("[yellow]Installing pre-commit hooks...[/yellow]", spinner="dots"):
-                    # Ensure pre-commit is installed in the virtual environment
-                    subprocess.run(
-                        [sys.executable, "-m", "pip", "install", "pre-commit"], check=True, capture_output=True
-                    )
-                    # Use the full path to pre-commit in the virtual environment
-                    subprocess.run(
-                        [f"{sys.executable}", "-m", "pre_commit", "install"], check=True, capture_output=True
-                    )
-                    console.print("[ok]✓ Pre-commit hooks installed successfully[/ok]")
-            else:
-                console.print("[yellow]Skipping pre-commit hooks installation.[/yellow]")
-
-
 def print_config(config: TemplateConfig) -> None:
     """Print the current configuration."""
     header("Template Configuration")
@@ -352,10 +303,6 @@ def main():
         if not args.yes and not Confirm.ask("\nWould you like to apply this configuration?"):
             console.print("[yellow]Template application cancelled.[/yellow]")
             return
-
-        # Set up development environment
-        setup = ProjectSetup(args.yes)
-        setup.setup_environment()
 
         # Process template files
         processor = TemplateProcessor(config, args.yes)
