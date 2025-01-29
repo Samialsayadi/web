@@ -6,7 +6,7 @@ from fastapi import Request
 from starlette.templating import _TemplateResponse
 
 from console import console
-from placeholder.main import main
+from gitemplate.main import main
 from server.server_config import EXAMPLE_REPOS, templates
 
 

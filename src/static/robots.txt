@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Allow: /api/
-Allow: /{{ github_username }}/{{ github_repository }}/
+Allow: /https://bsky.app/profile/atyrode.bsky.social/gitemplate/

@@ -1,7 +1,7 @@
 [project]
-name = "{{ package_name }}"
-version = "{{ package_version }}"
-description="{{ package_description }}"
+name = "gitemplate"
+version = "0.1.0"
+description="FastAPI for creating apps like gitingest"
 readme = {file = "README.md", content-type = "text/markdown" }
 requires-python = ">= 3.10"
 dependencies = [
@@ -14,7 +14,7 @@ dependencies = [
     "uvicorn",
 ]
 license = {file = "LICENSE"}
-authors = [{name = "{{ author }}", email = "{{ author_email }}"}]
+authors = [{name = "Alex TYRODE", email = "alex.tyrode@outlook.fr"}]
 classifiers=[
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -26,11 +26,11 @@ classifiers=[
 ]
 
 [project.scripts]
-"{{ package_name }}" = "{{ package_name }}.cli:cli"
+"gitemplate" = "gitemplate.cli:cli"
 
 [project.urls]
-homepage = "{{ project_url }}"
-github = "https://github.com/{{ github_username }}/{{ github_repository }}"
+homepage = "gitemplate.com"
+github = "https://github.com/https://bsky.app/profile/atyrode.bsky.social/gitemplate"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]

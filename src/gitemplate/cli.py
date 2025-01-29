@@ -6,7 +6,7 @@ import asyncio
 
 import click
 
-from placeholder.main import main
+from gitemplate.main import main
 
 
 @click.command()

@@ -41,7 +41,7 @@ if allowed_hosts:
     allowed_hosts = allowed_hosts.split(",")
 else:
     # Define the default allowed hosts for the application
-    default_allowed_hosts = ["{{ project_domain }}", "*.{{ project_domain }}", "localhost", "127.0.0.1"]
+    default_allowed_hosts = ["dev.gitingest.com", "*.your-project-domain.com", "localhost", "127.0.0.1"]
     allowed_hosts = default_allowed_hosts
 
 # Add middleware to enforce allowed hosts

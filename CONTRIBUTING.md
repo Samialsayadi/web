@@ -1,12 +1,12 @@
-# Contributing to {{ project_name }}
+# Contributing to Gitemplate
 
-Thanks for your interest in contributing to {{ project_name }}! 🚀 {{ project_name }} aims to be friendly for first time contributors, with a simple python and html codebase. We would love your help to make it even better. If you need any help while working with the code, please reach out to us on [Discord]({{ discord_invite }}).
+Thanks for your interest in contributing to Gitemplate! 🚀 Gitemplate aims to be friendly for first time contributors, with a simple python and html codebase. We would love your help to make it even better. If you need any help while working with the code, please reach out to us on [Discord](https://discord.com/invite/example).
 
 ## How to Contribute (non-technical)
 
-- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub. This will help us track and prioritize your request.
-- **Spread the Word**: If you like {{ project_name }}, please share it with your friends, colleagues, and on social media. This will help us grow the community and make {{ project_name }} even better.
-- **Use {{ project_name }}**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/{{ github_username }}/{{ github_repository }}/issues/new) on GitHub or by reaching out to us on [Discord]({{ discord_invite }}).
+- **Create an Issue**: If you find a bug or have an idea for a new feature, please [create an issue](https://github.com/https://bsky.app/profile/atyrode.bsky.social/gitemplate/issues/new) on GitHub. This will help us track and prioritize your request.
+- **Spread the Word**: If you like Gitemplate, please share it with your friends, colleagues, and on social media. This will help us grow the community and make Gitemplate even better.
+- **Use Gitemplate**: The best feedback comes from real-world usage! If you encounter any issues or have ideas for improvement, please let us know by [creating an issue](https://github.com/https://bsky.app/profile/atyrode.bsky.social/gitemplate/issues/new) on GitHub or by reaching out to us on [Discord](https://discord.com/invite/example).
 
 ## How to submit a Pull Request
 
@@ -15,8 +15,8 @@ Thanks for your interest in contributing to {{ project_name }}! 🚀 {{ project_
 2. Clone the forked repository:
 
    ```bash
-   git clone https://github.com/{{ github_username }}/{{ github_repository }}.git
-   cd {{ github_repository }}
+   git clone https://github.com/https://bsky.app/profile/atyrode.bsky.social/gitemplate.git
+   cd gitemplate
    ```
 
 3. Set up the development environment and install dependencies:
