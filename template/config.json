@@ -1,0 +1,24 @@
+{
+    "similar_to_gitingest": {
+        "enabled": false
+    },
+    "traefik": {
+        "enabled": false
+    },
+    "docker": {
+        "dockerfile": {
+            "enabled": false
+        },
+        "docker_compose": {
+            "enabled": false
+        }
+    },
+    "git": {
+        "pre_commit_hooks": {
+            "enabled": false
+        },
+        "workflows": {
+            "enabled": false
+        }
+    }
+}
